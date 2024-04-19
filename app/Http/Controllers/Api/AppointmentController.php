@@ -1,0 +1,127 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use Exception;
+use App\Models\Doctor;
+use App\Models\Appointment;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreAppointmentRequest;
+use App\Http\Resources\AppointmentRessource;
+use App\Jobs\SendNotificationToDoctorPatient;
+use App\Http\Requests\UpdateAppointmentRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+
+class AppointmentController extends Controller
+{
+
+    /**
+     * Display a listing of the appointments by patient.
+     *
+     * @param  Request $request
+     * @return AnonymousResourceCollection
+     */
+    public function index(Request $request): AnonymousResourceCollection|JsonResponse
+    {
+        try {
+            $appointment = Appointment::where('patient_id', $request->user()->patient->id)
+                ->with('doctor')
+                ->when($request->query('status'), function ($query) use ($request) {
+                    $query->where('status', $request->query('status'));
+                })
+                ->orderBy('date_appointment', 'desc')
+                ->paginate();
+
+            return AppointmentRessource::collection($appointment);
+        } catch (Exception $e) {
+            $code = 500;
+            if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface) {
+                $code = $e->getStatusCode();
+            }
+            throw new HttpResponseException(response()->json($e->getMessage(), $code));
+        }
+    }
+
+
+    /**
+     * Store a newly created appointment in storage.
+     *
+     * @param  StoreAppointmentRequest $request
+     * @return JsonResponse
+     */
+    public function store(StoreAppointmentRequest $request): JsonResponse
+    {
+        try {
+            $doctorId = $request->doctor_id;
+            $doctor = Doctor::findOrFail($doctorId);
+
+            $data = [
+                ...$request->validated(),
+                'amount' => $doctor->visit_price,
+            ];
+
+            $newAppointment = Appointment::create($data);
+            $newAppointment->save();
+            SendNotificationToDoctorPatient::dispatch(appointment: $newAppointment);
+            return response()->json(new AppointmentRessource(Appointment::find($newAppointment->id)));
+        } catch (Exception $e) {
+            $code = 500;
+            if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface) {
+                $code = $e->getStatusCode();
+            }
+            throw new HttpResponseException(response()->json($e->getMessage(), $code));
+        }
+    }
+
+
+    /**
+     * Display the specified appointment by id.
+     *
+     * @param  Request $request
+     * @param  string|int $appointmentId
+     * @return JsonResponse
+     */
+    public function show(Request $request, string $id): JsonResponse
+    {
+        try {
+            $appointment = Appointment::where('patient_id', '=', $request->user()->patient->id)->findOrFail($id);
+            return response()->json(new AppointmentRessource($appointment));
+        } catch (Exception $e) {
+            $code = 500;
+            if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface) {
+                $code = $e->getStatusCode();
+            }
+            throw new HttpResponseException(response()->json($e->getMessage(), $code));
+        }
+    }
+
+
+    /**
+     * Update the specified appointment by id in storage.
+     *
+     * @param  UpdateAppointmentRequest $request
+     * @param  string|int $id
+     * @return JsonResponse
+     */
+    public function update(UpdateAppointmentRequest $request, string $id): JsonResponse
+    {
+        Appointment::findOrFail($id)->update($request->validated());
+        return response()->json(new AppointmentRessource(Appointment::find($id)));
+    }
+
+
+    /**
+     * Remove the specified appointment by id from storage.
+     *
+     * @param  string|int $id
+     * @return JsonResponse
+     */
+    public function destroy(string $id): JsonResponse
+    {
+        Appointment::findOrFail($id)->delete();
+        return response()->json('', 204);
+    }
+}

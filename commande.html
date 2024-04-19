@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestionnaire de Commandes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+        }
+
+        .input-group {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        label {
+            margin-right: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #180dec;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #180dec;
+        }
+
+        .btn-submit-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px auto;
+        }
+
+        table {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #180dec;
+            color: white;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2 style="text-align:center;">Gestionnaire de Commandes</h2>
+
+    <div class="container">
+        <div class="input-group">
+            <label for="produit">Produit:</label>
+            <input type="text" id="produit" name="produit" placeholder="Produit">
+            <label for="quantite">Quantité:</label>
+            <input type="number" id="quantite" name="quantite" placeholder="Quantité">
+            <label for="prix">Prix Unitaire:</label>
+            <input type="number" id="prix" name="prix" placeholder="Prix Unitaire">
+        </div>
+        <div class="btn-submit-container">
+            <button onclick="ajouterCommande()" title="Enregistrer">Enregistrer</button>
+        </div>
+    </div>
+    <table id="tableau">
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th>Prix Unitaire</th>
+                <th>Montant</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="total">Total</td>
+                <td id="total">0</td>
+            </tr>
+        </tfoot>
+    </table>
+
+
+    <script>
+        function ajouterCommande() {
+            var produit = document.getElementById('produit').value;
+            var quantite = document.getElementById('quantite').value;
+            var prix = document.getElementById('prix').value;
+            var montant = quantite * prix;
+            u
+            if (produit && quantite && prix) {
+                var tableau = document.getElementById('tableau').getElementsByTagName('tbody')[0];
+                var nouvelleLigne = tableau.insertRow();
+                nouvelleLigne.innerHTML = "<td>" + produit + "</td><td>" + quantite + "</td><td>" + prix + "</td><td>" + montant + "</td>";
+
+                var totalElement = document.getElementById('total');
+                var total = parseFloat(totalElement.textContent);
+                total += montant;
+                totalElement.textContent = total.toFixed(2);
+
+                // Réinitialiser les champs de saisie
+                document.getElementById('produit').value = '';
+                document.getElementById('quantite').value = '';
+                document.getElementById('prix').value = '';
+            } else {
+                alert('Veuillez remplir tous les champs.');
+            }
+        }
+    </script>
+
+</body>
+
+</html>

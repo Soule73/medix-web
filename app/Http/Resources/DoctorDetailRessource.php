@@ -1,0 +1,52 @@
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
+
+class DoctorDetailRessource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(Request $request): array
+    {
+        return [
+            'id' => $this->id,
+            'working_hours' => $this->grouped_working_hours->map(function ($dayGroup, $dayName) {
+                return $dayGroup->map(function ($workingHour) {
+                    return [
+                        'id' => $workingHour->id,
+                        'start_at' => $workingHour->start_at,
+                        'end_at' => $workingHour->end_at,
+                        'work_place_id' => $workingHour->work_place->id,
+                        'work_place_name' => $workingHour->work_place->name,
+                        'work_place_address' => $workingHour->work_place->address,
+                        'work_place_latitude' => $workingHour->work_place->latitude,
+                        'work_place_longitude' => $workingHour->work_place->longitude,
+                    ];
+                });
+            }),
+            'review_ratings' => $this->review_ratings->map(function ($rating) {
+                return [
+                    'id' => $rating->id,
+                    'star' => $rating->star,
+                    'patient_id' => $rating->patient_id,
+                    'patient_fullname' => $rating->patient->user_fullname,
+                    'patient_avatar' => $rating->patient->user->avatar !== null && Storage::exists($rating->patient->user->avatar) ? Storage::url($rating->patient->user->avatar) : $rating->patient->user->avatar,
+                    'doctor_id' => $rating->doctor->id,
+                    'doctor_fullname' => $rating->doctor->user_fullname,
+                    'doctor_avatar' => $rating->doctor->user->avatar !== null && Storage::exists($rating->doctor->user->avatar) ? Storage::url($rating->doctor->user->avatar) : $rating->doctor->user->avatar,
+                    'comment' => $rating->comment,
+                    'created_at' => $rating->created_at,
+                    'updated_at' => $rating->updated_at,
+                ];
+            }),
+
+        ];
+    }
+}

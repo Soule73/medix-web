@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Filament\Pages;
+
+use Filament\Pages\Page;
+
+class Pulse extends Page
+{
+    protected static ?int $navigationSort = 3;
+
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
+    protected static string $view = 'filament.pages.pulse';
+
+    public static function getNavigationLabel(): string
+    {
+        return __('pulse.applicatin-state');
+    }
+
+    public function getTitle(): string
+    {
+        return __('pulse.applicatin-state');
+    }
+}

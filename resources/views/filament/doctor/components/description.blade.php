@@ -1,0 +1,1 @@
+{!! __('doctor/relation/document-for-validation.description-header') !!}

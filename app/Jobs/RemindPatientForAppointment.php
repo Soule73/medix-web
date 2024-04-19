@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Jobs;
+
+use Exception;
+use App\Models\Appointment;
+use Illuminate\Support\Str;
+use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
+use Berkayk\OneSignal\OneSignalFacade;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Database\Eloquent\Collection;
+
+class RemindPatientForAppointment implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    /**
+     * Create a new job instance.
+     */
+    public function __construct(private Collection $appointments)
+    {
+        //
+    }
+
+    /**
+     * Execute the job.
+     */
+    public function handle(): void
+    {
+        foreach ($this->appointments as $appointment) {
+            try {
+                $patient = $appointment->patient->user;
+
+                $oneSignalId = $patient->one_signal_id;
+                $defaultLang = $patient->default_lang->value;
+                $id = "#" . Str::padLeft($appointment->id, 8, '0');
+                $status = __('doctor/notification.appointment-id', ['id' => $id], $defaultLang ?? config('app.locale'));
+                $bodyRemind = __('doctor/notification.remind-patient-notification');
+
+                if ($oneSignalId) {
+                    // send notification if user as subricuber in notifcations
+                    $params = ['small_icon' => 'ic_stat_onesignal_default'];
+                    OneSignalFacade::addParams($params)->sendNotificationToUser(
+                        message: $bodyRemind,
+                        userId: $oneSignalId,
+                        headings: $status,
+                    );
+
+                    // set remind_patient column to true
+                    $appointment->remind_patient = true;
+                    $appointment->save();
+                }
+            } catch (Exception $e) {
+                Log::error("Error RemindPatientForAppointment: " . $e->getMessage());
+            }
+        }
+    }
+}

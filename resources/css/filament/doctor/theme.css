@@ -1,0 +1,169 @@
+@import '/vendor/filament/filament/resources/css/theme.css';
+@import '/vendor/laravel/pulse/resources/css/pulse.css';
+@import './pulse.css';
+@config 'tailwind.config.js';
+
+
+.fi-sidebar-nav
+
+/* aside.header.fi-sidebar-header */
+    {
+    @apply shadow-md !bg-gradient-to-b to-[#f3f2f2] from-[#ffffff]
+    /* !bg-[#15125c] */
+}
+
+aside.fi-sidebar {
+    @apply divide-y-2 xl:px-3 xl:py-3 xl:rounded-lg dark:divide-gray-700/30
+}
+
+li .fi-sidebar-item-active a {
+    /* @apply !bg-blue-600 */
+    @apply !bg-gradient-to-tr !from-blue-800 !to-blue-400
+}
+
+li .fi-sidebar-item-active a span {
+    @apply !text-white
+}
+
+li .fi-sidebar-item-active a svg {
+    @apply !text-white
+}
+
+aside {
+    @apply !bg-[#f0f2fa] !rounded-none
+}
+
+:is(.dark aside) {
+    @apply !bg-transparent
+}
+
+:is(
+
+    /* .dark .fi-sidebar-header, */
+    /* .dark aside.header.fi-sidebar-header, */
+    .dark .fi-sidebar-nav, ) {
+    @apply shadow-md !bg-gradient-to-b to-[#000000] from-[#1d1c1f]
+}
+
+aside header.fi-sidebar-header {
+    @apply xl:rounded-tl-lg xl:rounded-tr-lg
+}
+
+aside .fi-sidebar-nav {
+    @apply xl:rounded-bl-lg xl:rounded-br-lg
+}
+
+:is(.dark aside header.fi-sidebar-header, ) {
+    @apply !bg-[#1d1c1f] !shadow-none
+}
+
+aside header.fi-sidebar-header {
+    @apply !bg-[#ffffff] !shadow-none
+}
+
+.fi-topbar nav {
+    @apply !bg-blue-600 backdrop-blur-2xl !ring-0 xl:rounded-lg
+}
+
+
+.fi-topbar {
+    @apply xl:top-4 xl:px-10
+}
+
+
+div div.fi-modal-window {
+    @apply xl:-top-4 xl:-right-14
+}
+
+div.language-switch-trigger span {
+    @apply !bg-white !text-black p-2 rounded-lg
+}
+
+.fi-topbar-database-notifications-btn svg {
+    @apply !stroke-white
+}
+
+.fi-topbar nav .fi-icon-btn-icon {
+    @apply text-white
+}
+
+header.fi-header {
+    @apply !bg-gradient-to-tr !from-blue-600 !to-blue-950 p-6 rounded-lg
+}
+
+/* header div button {
+    @apply !shadow-white/10 !shadow-lg
+} */
+
+nav a.fi-breadcrumbs-item-label {
+    @apply !text-slate-300
+}
+
+nav a.fi-breadcrumbs-item-label:hover {
+    @apply !text-white
+}
+
+div.fi-main-ctn {
+    @apply bg-[#f0f2fa] dark:bg-gray-950
+}
+
+/* .fi-sidebar-nav, .fi-sidebar-header {
+    @apply border-r border-gray-400/30
+} */
+
+.fi-sidebar-header {
+    @apply !ring-0
+}
+
+.fi-topbar nav {
+    @apply dark:bg-[#09090B] ring-gray-400/30
+}
+
+.doctor-total-patient {
+    @apply !bg-gradient-to-tr !from-blue-800 !to-blue-400 !shadow-xl !shadow-blue-600/40
+}
+
+.doctor-total-appointment {
+    @apply !bg-gradient-to-tr !from-indigo-800 !to-indigo-400 !shadow-xl !shadow-indigo-600/40
+}
+
+.doctor-total-income {
+    @apply !bg-gradient-to-tr !from-amber-800 !to-amber-400 !shadow-xl !shadow-amber-600/40
+}
+
+.doctor-total-patient svg,
+.doctor-total-appointment svg,
+.doctor-total-income svg {
+    @apply !bg-white !text-black w-10 h-10 p-2 rounded-full
+}
+
+.doctor-total-patient span.fi-wi-stats-overview-stat-label,
+.doctor-total-patient div.fi-wi-stats-overview-stat-value,
+.doctor-total-appointment span.fi-wi-stats-overview-stat-label,
+.doctor-total-appointment div.fi-wi-stats-overview-stat-value,
+.doctor-total-income span.fi-wi-stats-overview-stat-label,
+.doctor-total-income div.fi-wi-stats-overview-stat-value {
+    @apply !text-white
+}
+
+.doctor-total-income div.fi-wi-stats-overview-stat-value {
+    @apply after:content-['MRU'] after:text-base
+}
+
+
+.fi-wi-chart section.fi-section {
+    @apply ring-0 shadow-md
+}
+
+a.fc-daygrid-event {
+    @apply bg-blue-600 text-[10px]
+}
+
+/* login page */
+
+/* .fi-simple-main-ctn main.fi-simple-main {
+    @apply backdrop-blur-lg !bg-white/30
+} */
+
+
+/* laravel pulse */

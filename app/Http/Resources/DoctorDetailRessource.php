@@ -26,8 +26,8 @@ class DoctorDetailRessource extends JsonResource
                         'work_place_id' => $workingHour->work_place->id,
                         'work_place_name' => $workingHour->work_place->name,
                         'work_place_address' => $workingHour->work_place->address,
-                        'work_place_latitude' => $workingHour->work_place->latitude,
-                        'work_place_longitude' => $workingHour->work_place->longitude,
+                        'work_place_latitude' => strval($workingHour->work_place->latitude),
+                        'work_place_longitude' => strval($workingHour->work_place->longitude),
                     ];
                 });
             }),

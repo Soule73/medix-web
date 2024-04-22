@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers\Api;
 
-use Exception;
-use Carbon\Carbon;
-use App\Models\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\PatientRegistrationRequest;
+use App\Models\User;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Hash;
 
 class RegisteredController extends Controller
 {
     /**
      * creation d'un utilisateur et associer un profile patient
      *
-     * @param  PatientRegistrationRequest $request
-     * @throws \Illuminate\Validation\ValidationException
      * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function __invoke(PatientRegistrationRequest $request)
     {
@@ -47,10 +47,10 @@ class RegisteredController extends Controller
                 'birthday' => Carbon::parse($request->birthday)->format('Y-m-d'),
             ]);
 
-
             // retourner le token la valeur $device_id doit être
             //valide pour l'identification de chaque appareil
             $token = $user->createToken($request->device_id)->plainTextToken;
+
             return response()
                 ->json([
                     'token' => $token,

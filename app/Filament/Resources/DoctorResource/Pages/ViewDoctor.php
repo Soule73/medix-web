@@ -19,8 +19,6 @@ class ViewDoctor extends ViewRecord
         return __('doctor/doctor.doctor-info');
     }
 
-
-
     protected function getHeaderActions(): array
     {
         return [
@@ -58,7 +56,7 @@ class ViewDoctor extends ViewRecord
                                 __('doctor/doctor.approved-notification-title', [], $default_lang ?? config('app.locale'))
                             )
                             ->body(
-                                __('doctor/doctor.approved-notification-body', [], $default_lang  ?? config('app.locale'))
+                                __('doctor/doctor.approved-notification-body', [], $default_lang ?? config('app.locale'))
                             )
                             ->icon('heroicon-s-check-badge')
                             ->success()

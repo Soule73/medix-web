@@ -46,6 +46,6 @@ return [
     'form-confirm-payed' => 'يرجى تحديد المربع لتأكيد الدفع',
 
     'answer-appointment' => 'إجابة',
-    'delete-this-file' => 'احذف هذا الملف'
+    'delete-this-file' => 'احذف هذا الملف',
 
 ];

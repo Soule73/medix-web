@@ -3,11 +3,11 @@
 namespace App\Filament\Doctor\Pages\Auth;
 
 use App\Enums\User\UserRoleEnum;
-use Illuminate\Auth\Events\Registered;
+use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use Filament\Http\Responses\Auth\Contracts\RegistrationResponse;
 use Filament\Notifications\Notification;
 use Filament\Pages\Auth\Register as BaseRegister;
-use Filament\Http\Responses\Auth\Contracts\RegistrationResponse;
-use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use Illuminate\Auth\Events\Registered;
 
 class Register extends BaseRegister
 {
@@ -51,6 +51,7 @@ class Register extends BaseRegister
             ->success()
             ->send();
         session()->regenerate();
+
         return app(RegistrationResponse::class);
     }
 }

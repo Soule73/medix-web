@@ -91,9 +91,6 @@ header.fi-header {
     @apply !bg-gradient-to-tr !from-blue-600 !to-blue-950 p-6 rounded-lg
 }
 
-/* header div button {
-    @apply !shadow-white/10 !shadow-lg
-} */
 
 nav a.fi-breadcrumbs-item-label {
     @apply !text-slate-300
@@ -156,7 +153,7 @@ div.fi-main-ctn {
 }
 
 a.fc-daygrid-event {
-    @apply bg-blue-600 text-[10px]
+    @apply bg-blue-600 text-[10px] text-white hover:text-blue-600
 }
 
 /* login page */

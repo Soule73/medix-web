@@ -60,7 +60,7 @@ class AppointmentsPerMonthBarChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => __('doctor/appointment.accepted') . "/" . __('doctor/appointment.finished'),
+                    'label' => __('doctor/appointment.accepted').'/'.__('doctor/appointment.finished'),
                     'data' => $appointmentsData->pluck('acceptedOrFinishied')->values(),
                     'backgroundColor' => '#36A2EB',
                     'borderColor' => '#9BD0F5',

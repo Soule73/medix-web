@@ -2,16 +2,16 @@
 
 namespace App\Jobs;
 
-use Exception;
-use App\Models\User;
-use Illuminate\Bus\Queueable;
+use App\Enums\Appointment\AppointmentStatusEnum;
 use App\Enums\User\UserStatusEnum;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Models\User;
+use Exception;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Enums\Appointment\AppointmentStatusEnum;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class DeletePatientAccount implements ShouldQueue
 {
@@ -32,7 +32,7 @@ class DeletePatientAccount implements ShouldQueue
     {
         try {
             $appointments = $this->user->patient->appointments
-                ->where("status", AppointmentStatusEnum::ACCEPTED)
+                ->where('status', AppointmentStatusEnum::ACCEPTED)
                 ->count();
             $patient_records = $this->user->patient->patient_records->count();
 
@@ -57,7 +57,7 @@ class DeletePatientAccount implements ShouldQueue
             $this->user->notifications()->where('notifiable_id', $this->user->id)->delete();
             $this->user->tokens()->delete();
         } catch (Exception $e) {
-            Log::error("Error DeletePatientAccount: " . $e->getMessage());
+            Log::error('Error DeletePatientAccount: '.$e->getMessage());
         }
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
 use App\Enums\User\UserSexEnum;
-use Illuminate\Validation\Rule;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 class PatientRegistrationRequest extends FormRequest
 {
@@ -28,9 +28,9 @@ class PatientRegistrationRequest extends FormRequest
         return [
             'name' => 'required|string|max:255|min:3',
             'first_name' => 'nullable|string|max:255|min:3',
-            'phone' => 'required|digits:8|unique:' . User::class,
+            'phone' => 'required|digits:8|unique:'.User::class,
             'avatar' => 'nullable|string|url:http,https',
-            'email' => 'nullable|string|lowercase|email|max:255|unique:' . User::class,
+            'email' => 'nullable|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required'],
             'birthday' => 'required|date|before:today|before:18 years ago',
             'city_id' => 'required|integer',
@@ -51,6 +51,7 @@ class PatientRegistrationRequest extends FormRequest
 
     /**
      * Get the error messages for the defined validation rules.*
+     *
      * @return array
      */
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

@@ -2,17 +2,17 @@
 
 namespace App\Jobs;
 
-use Exception;
 use App\Models\Appointment;
-use Illuminate\Support\Str;
-use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Log;
 use Berkayk\OneSignal\OneSignalFacade;
-use Illuminate\Queue\SerializesModels;
+use Exception;
 use Filament\Notifications\Notification;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class SendAppointmentPaiementCorfirmedNotificationToPatient implements ShouldQueue
 {
@@ -34,15 +34,15 @@ class SendAppointmentPaiementCorfirmedNotificationToPatient implements ShouldQue
             $patient = $this->appointment->patient->user;
             $default_lang = $patient->default_lang->value;
             $oneSignald = $patient->one_signal_id;
-            $id = "#" . Str::padLeft($this->appointment->id, 8, '0');
-            $status = __('doctor/notification.appointment-id', ['id' => $id], $default_lang  ?? config('app.locale'));
+            $id = '#'.Str::padLeft($this->appointment->id, 8, '0');
+            $status = __('doctor/notification.appointment-id', ['id' => $id], $default_lang ?? config('app.locale'));
             $content = __('doctor/notification.payement-confirmed', ['amount' => $this->appointment->amount], $default_lang ?? config('app.locale'));
             if ($this->appointment->payed) {
                 Notification::make()
                     ->title($status)
                     ->body($content)
                     ->success()
-                    ->viewData(["record" => $this->appointment->id])
+                    ->viewData(['record' => $this->appointment->id])
                     ->sendToDatabase($this->appointment->patient->user);
 
                 if ($oneSignald) {
@@ -59,7 +59,7 @@ class SendAppointmentPaiementCorfirmedNotificationToPatient implements ShouldQue
                 }
             }
         } catch (Exception $e) {
-            Log::error("Error SendAppointmentPaiementCorfirmedNotificationToPatient: " . $e->getMessage());
+            Log::error('Error SendAppointmentPaiementCorfirmedNotificationToPatient: '.$e->getMessage());
         }
     }
 }

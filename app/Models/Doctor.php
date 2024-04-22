@@ -98,6 +98,10 @@ class Doctor extends Model
     {
         return $this->user->fullname;
     }
+    public function getUserSexAttribute()
+    {
+        return $this->user->sex;
+    }
 
     public function patients()
     {

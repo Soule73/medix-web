@@ -24,8 +24,6 @@ return [
 
     'review' => 'مراجعة',
     'rating' => 'تقييم',
-    'rating-and-reviews' => 'تقييمات ومراجعات المرضى'
-
-
+    'rating-and-reviews' => 'تقييمات ومراجعات المرضى',
 
 ];

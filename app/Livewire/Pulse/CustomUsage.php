@@ -2,16 +2,15 @@
 
 namespace App\Livewire\Pulse;
 
-use Livewire\Attributes\Url;
-use Livewire\Attributes\Lazy;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Facades\Config;
 use Laravel\Pulse\Facades\Pulse;
 use Laravel\Pulse\Livewire\Card;
-use Illuminate\Support\Facades\View;
-use Laravel\Pulse\Recorders\UserJobs;
-use Illuminate\Support\Facades\Config;
 use Laravel\Pulse\Recorders\SlowRequests;
+use Laravel\Pulse\Recorders\UserJobs;
 use Laravel\Pulse\Recorders\UserRequests;
-use Illuminate\Contracts\Support\Renderable;
+use Livewire\Attributes\Lazy;
+use Livewire\Attributes\Url;
 
 /**
  * @internal
@@ -67,9 +66,9 @@ class CustomUsage extends Card
         return view('livewire.pulse.custom-usage', [
             'time' => $time,
             'runAt' => $runAt,
-            'userRequestsConfig' => Config::get('pulse.recorders.' . UserRequests::class),
-            'slowRequestsConfig' => Config::get('pulse.recorders.' . SlowRequests::class),
-            'jobsConfig' => Config::get('pulse.recorders.' . UserJobs::class),
+            'userRequestsConfig' => Config::get('pulse.recorders.'.UserRequests::class),
+            'slowRequestsConfig' => Config::get('pulse.recorders.'.SlowRequests::class),
+            'jobsConfig' => Config::get('pulse.recorders.'.UserJobs::class),
             'userRequestCounts' => $userRequestCounts,
         ]);
     }

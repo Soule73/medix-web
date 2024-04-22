@@ -1,9 +1,27 @@
+@php
+use Illuminate\Support\Str;
+
+$replacements = [
+'7 days' => __('pulse.7-days'),
+'24 hours' => __('pulse.24-hour'),
+'hour' => __('pulse.a-hour'),
+'6 hours' => __('pulse.6-hour'),
+];
+
+$period = $this->periodForHumans();
+
+foreach ($replacements as $search => $replace) {
+$period = Str::replace($search, $replace, $period);
+}
+@endphp
 <x-pulse::card :cols="$cols" :rows="$rows" :class="$class">
     <x-pulse::card-header name="{{ __('pulse.exception-card-header-name') }}"
         title="{{ __('pulse.exception-card-header-title',['time'=>number_format($time),'runAt'=>$runAt]) }}" details="{{
         __('pulse.cache-card-header-details',[
-        'periodForHumans'=>$this->periodForHumans()])
+        'periodForHumans'=>$period])
         }}">
+
+        {{-- Str::replace('6 hour','6 heure',''); --}}
         <x-slot:icon>
             <x-pulse::icons.bug-ant />
         </x-slot:icon>
@@ -18,7 +36,7 @@
     <x-pulse::scroll :expand="$expand" wire:poll.5s="">
         <div class="min-h-full flex flex-col">
             @if ($exceptions->isEmpty())
-            <x-pulse::no-results />
+            <x-custom-no-results />
             @else
             <x-pulse::table>
                 <colgroup>

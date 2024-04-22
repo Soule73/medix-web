@@ -2,19 +2,18 @@
 
 namespace App\Jobs;
 
-use Exception;
-use App\Models\User;
 use App\Models\Appointment;
-use Illuminate\Support\Str;
-use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Log;
 use Berkayk\OneSignal\OneSignalFacade;
-use Illuminate\Queue\SerializesModels;
-use Filament\Notifications\Notification;
-use Illuminate\Queue\InteractsWithQueue;
+use Exception;
 use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class SendNotificationToDoctorPatient implements ShouldQueue
 {
@@ -32,7 +31,6 @@ class SendNotificationToDoctorPatient implements ShouldQueue
      * Execute the job.
      */
     public function handle(): void
-
     {
         try {
             $patient = $this->appointment->patient->user;
@@ -46,7 +44,7 @@ class SendNotificationToDoctorPatient implements ShouldQueue
             $doctorNotificationBody = __('doctor/notification.doctor-new-appointment-body', [], $doctor_default_lang ?? config('app.locale'));
 
             $patientNotificationTitle = __(__('doctor/notification.patient-appointment-pending-title', [], $patient_default_lang ?? config('app.locale')));
-            $patientNotificationBody = __(__('doctor/notification.patient-appointment-pending-body', ['id' => "#" . Str::padLeft($this->appointment->id, 8, '0')], $patient_default_lang ?? config('app.locale')));
+            $patientNotificationBody = __(__('doctor/notification.patient-appointment-pending-body', ['id' => '#'.Str::padLeft($this->appointment->id, 8, '0')], $patient_default_lang ?? config('app.locale')));
 
             Notification::make()
                 ->title($doctorNotificationTitle)
@@ -59,9 +57,9 @@ class SendNotificationToDoctorPatient implements ShouldQueue
                         ->button()
                         ->markAsRead()
                         ->url(route(
-                            "filament.doctor.resources.appointments.view",
-                            ["record" => $this->appointment->id]
-                        ))
+                            'filament.doctor.resources.appointments.view',
+                            ['record' => $this->appointment->id]
+                        )),
                 ])
                 ->sendToDatabase($doctor);
 
@@ -70,9 +68,8 @@ class SendNotificationToDoctorPatient implements ShouldQueue
                 ->body($patientNotificationBody)
                 ->icon('heroicon-o-bell')
                 ->success()
-                ->viewData(["record" => $this->appointment->id])
+                ->viewData(['record' => $this->appointment->id])
                 ->sendToDatabase($patient);
-
 
             if ($oneSignalId) {
                 $params = [];
@@ -84,7 +81,7 @@ class SendNotificationToDoctorPatient implements ShouldQueue
                 );
             }
         } catch (Exception $e) {
-            Log::error("Error SendNotificationToDoctorPatient: " . $e->getMessage());
+            Log::error('Error SendNotificationToDoctorPatient: '.$e->getMessage());
         }
     }
 }

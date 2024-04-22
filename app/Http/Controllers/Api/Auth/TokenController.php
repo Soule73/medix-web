@@ -2,28 +2,26 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use Exception;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Enums\User\UserStatusEnum;
-use App\Jobs\DeletePatientAccount;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreTokenRequest;
-use Illuminate\Validation\Rules\Password;
 use App\Http\Resources\PatientInfoRessource;
-use Illuminate\Validation\ValidationException;
+use App\Jobs\DeletePatientAccount;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\ValidationException;
 
 class TokenController extends Controller
 {
     /**
      * store new token for user
      *
-     * @param  StoreTokenRequest $request
      * @throws Exception|HttpResponseException
-     * @return JsonResponse
      */
     public function store(StoreTokenRequest $request): JsonResponse
     {
@@ -33,7 +31,7 @@ class TokenController extends Controller
                 ->whereDate('phone_verified_at', '<=', now())
                 ->first();
 
-            if (!$user || !Hash::check($request->password, $user->password)) {
+            if (! $user || ! Hash::check($request->password, $user->password)) {
                 return response()->json(__('doctor/api.incorrect-auth-info'), 401);
             }
 
@@ -52,9 +50,7 @@ class TokenController extends Controller
     /**
      * get current user informations from storage
      *
-     * @param  Request $request
      * @throws Exception|HttpResponseException
-     * @return JsonResponse
      */
     public function user(Request $request): JsonResponse
     {
@@ -73,9 +69,7 @@ class TokenController extends Controller
     /**
      * destroy current access token
      *
-     * @param  Request $request
      * @throws Exception|HttpResponseException
-     * @return JsonResponse
      */
     public function destroy(Request $request): JsonResponse
     {
@@ -91,14 +85,13 @@ class TokenController extends Controller
             throw new HttpResponseException(response()->json($e->getMessage(), $code));
         }
     }
+
     /**
      * delete user account permanent if don't have any
      * appointment in application else set user
      * status to inactive
      *
-     * @param  Request $request
      * @throws Exception|HttpResponseException
-     * @return JsonResponse
      */
     public function deleteAccount(Request $request): JsonResponse
     {
@@ -106,6 +99,7 @@ class TokenController extends Controller
             $request->user()->currentAccessToken()->delete();
 
             DeletePatientAccount::dispatch(user: $request->user());
+
             return response()->json('', 204);
         } catch (Exception $e) {
             $code = 500;
@@ -148,6 +142,7 @@ class TokenController extends Controller
             throw new HttpResponseException(response()->json($e->getMessage(), $code));
         }
     }
+
     public function verify(Request $request): JsonResponse
     {
 
@@ -161,9 +156,10 @@ class TokenController extends Controller
                 ->whereDate('phone_verified_at', '<=', now())
                 ->first();
 
-            if (!$user) {
+            if (! $user) {
                 return response()->json(['success' => false]);
             }
+
             return response()->json(['success' => true]);
         } catch (ValidationException $e) {
             return response()->json($e->getMessage(), 422);

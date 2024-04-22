@@ -37,13 +37,11 @@ return [
     'all-rights-reserved' => 'جميع الحقوق محفوظة',
     'calendar' => 'تقويم',
 
-    'year-experience' => "لغتك الافتراضية",
-    'default-lang' => "لغتك الافتراضية",
+    'year-experience' => 'لغتك الافتراضية',
+    'default-lang' => 'لغتك الافتراضية',
     'add-a-specialty' => 'أضف :add',
     'add-a-working-place' => 'أضف :add',
 
     'add-a-time-slot' => 'أضف فترة زمنية',
-
-
 
 ];

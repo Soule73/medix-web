@@ -5,7 +5,6 @@ namespace App\Livewire\Pulse;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\View;
 use Laravel\Pulse\Livewire\Card;
 use Laravel\Pulse\Recorders\Exceptions as ExceptionsRecorder;
 use Livewire\Attributes\Lazy;
@@ -50,11 +49,12 @@ class CustomExceptions extends Card
             }),
             $this->orderBy
         );
+
         return view('livewire.pulse.custom-exceptions', [
             'time' => $time,
             'runAt' => $runAt,
             'exceptions' => $exceptions,
-            'config' => Config::get('pulse.recorders.' . ExceptionsRecorder::class),
+            'config' => Config::get('pulse.recorders.'.ExceptionsRecorder::class),
         ]);
     }
 }

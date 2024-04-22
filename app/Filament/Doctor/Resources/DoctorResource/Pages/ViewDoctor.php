@@ -34,7 +34,7 @@ class ViewDoctor extends ViewRecord
 
         $this->authorizeAccess();
 
-        if (!$this->hasInfolist()) {
+        if (! $this->hasInfolist()) {
             $this->fillForm();
         }
     }

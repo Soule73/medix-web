@@ -1,10 +1,23 @@
 @php
 use Illuminate\Support\Str;
+
+$replacements = [
+'7 days' => __('pulse.7-days'),
+'24 hours' => __('pulse.24-hour'),
+'hour' => __('pulse.a-hour'),
+'6 hours' => __('pulse.6-hour'),
+];
+
+$period = $this->periodForHumans();
+
+foreach ($replacements as $search => $replace) {
+$period = Str::replace($search, $replace, $period);
+}
 @endphp
 <x-pulse::card :cols="$cols" :rows="$rows" :class="$class">
     <x-pulse::card-header name="{!! __('pulse.queues-card-header-name') !!}"
         title="{{ __('pulse.exception-card-header-title',['time'=>number_format($time, 0),'runAt'=>$runAt]) }}"
-        details="{{ __('pulse.cache-card-header-details',['periodForHumans'=>$this->periodForHumans()]) }}">
+        details="{{ __('pulse.cache-card-header-details',['periodForHumans'=>$period]) }}">
         <x-slot:icon>
             <x-pulse::icons.queue-list />
         </x-slot:icon>
@@ -36,7 +49,7 @@ use Illuminate\Support\Str;
 
     <x-pulse::scroll :expand="$expand" wire:poll.5s="">
         @if ($queues->isEmpty())
-        <x-pulse::no-results />
+        <x-custom-no-results />
         @else
         <div class="grid gap-3 mx-px mb-px">
             @foreach ($queues as $queue => $readings)

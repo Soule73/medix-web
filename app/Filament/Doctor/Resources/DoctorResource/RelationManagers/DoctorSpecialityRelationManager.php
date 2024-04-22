@@ -2,15 +2,15 @@
 
 namespace App\Filament\Doctor\Resources\DoctorResource\RelationManagers;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
 use App\Models\Speciality;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Enums\MaxWidth;
+use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Support\Enums\MaxWidth;
 
 class DoctorSpecialityRelationManager extends RelationManager
 {
@@ -62,7 +62,7 @@ class DoctorSpecialityRelationManager extends RelationManager
                                 'unique' => __('doctor/relation/speciality.form-validation-speciality-name-unique'),
                             ])
                             ->searchable(),
-                    ])
+                    ]),
             ]);
     }
 
@@ -90,7 +90,7 @@ class DoctorSpecialityRelationManager extends RelationManager
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('speciality.description')
-                    ->formatStateUsing(fn (string $state): string => __('doctor/relation/speciality.' . Speciality::where('description', $state)->first()->name . '.description'))
+                    ->formatStateUsing(fn (string $state): string => __('doctor/relation/speciality.'.Speciality::where('description', $state)->first()->name.'.description'))
                     ->label(__('doctor/relation/speciality.description')),
             ])->defaultSort('speciality.name', 'asc')
             ->filters([

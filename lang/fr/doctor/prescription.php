@@ -19,10 +19,4 @@ return [
     'diagnostic' => 'Diagnostique',
     'see-preinscription' => "Voir l'ordonnance",
 
-
-
-
-
-
-
 ];

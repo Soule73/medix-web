@@ -1,11 +1,11 @@
 <?php
 
 use App\Enums\Appointment\AppointmentStatusEnum;
+use App\Jobs\RemindPatientForAppointment;
 use App\Models\Appointment;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
-use App\Jobs\RemindPatientForAppointment;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());

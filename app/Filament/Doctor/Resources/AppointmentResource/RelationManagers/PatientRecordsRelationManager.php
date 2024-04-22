@@ -186,15 +186,16 @@ class PatientRecordsRelationManager extends RelationManager
                     Tables\Actions\DeleteAction::make()
                         ->modalHeading(function (PatientRecord $record) {
                             if ($record->path) {
-                                return __('actions.delete') . ' ' . 'cette fichier';
+                                return __('actions.delete').' '.'cette fichier';
                             }
+
                             return __('actions.delete');
                         })
                         ->before(function (PatientRecord $record) {
                             if ($record->path && Storage::fileExists($record->path)) {
                                 Storage::delete($record->path);
                             }
-                        })
+                        }),
                 ])
                     ->color('gray'),
             ])

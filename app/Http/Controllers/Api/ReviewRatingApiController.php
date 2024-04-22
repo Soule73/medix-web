@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use Exception;
-use App\Models\ReviewRating;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ReviewRatingsResource;
+use App\Models\ReviewRating;
+use Exception;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Request;
 
 class ReviewRatingApiController extends Controller
 {
@@ -31,11 +31,11 @@ class ReviewRatingApiController extends Controller
 
         try {
             $request->validate([
-                "appointment_id" => ["required"],
-                "patient_id" => ["required"],
-                "doctor_id" => ["required"],
-                "star" => ["required"],
-                "comment" => ["nullable", "string"]
+                'appointment_id' => ['required'],
+                'patient_id' => ['required'],
+                'doctor_id' => ['required'],
+                'star' => ['required'],
+                'comment' => ['nullable', 'string'],
             ]);
 
             $new = ReviewRating::create($request->all());
@@ -54,10 +54,10 @@ class ReviewRatingApiController extends Controller
         try {
             $request->validate([
                 // "appointment_id" => ["required"],
-                "patient_id" => ["required"],
-                "doctor_id" => ["required"],
-                "star" => ["required"],
-                "comment" => ["nullable", "string"]
+                'patient_id' => ['required'],
+                'doctor_id' => ['required'],
+                'star' => ['required'],
+                'comment' => ['nullable', 'string'],
             ]);
 
             ReviewRating::findOrFail($id)->update($request->all());
@@ -69,14 +69,15 @@ class ReviewRatingApiController extends Controller
             throw new HttpResponseException(response()->json($e->getMessage(), 500));
         }
     }
+
     public function delete(string $id)
     {
         try {
             ReviewRating::findOrFail($id)->delete();
 
-            return response()->json(["success" => true]);
+            return response()->json(['success' => true]);
         } catch (Exception $e) {
-            throw new HttpResponseException(response()->json(["success" => false], 500));
+            throw new HttpResponseException(response()->json(['success' => false], 500));
         }
     }
 }

@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Enums\Appointment\AppointmentStatusEnum;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Appointment extends Model
 {
@@ -32,7 +32,7 @@ class Appointment extends Model
         'amount',
         'discount',
         'confirm_payed',
-        'remind_patient'
+        'remind_patient',
     ];
 
     /**
@@ -48,7 +48,7 @@ class Appointment extends Model
             'payed' => 'boolean',
             'discount' => 'float',
             'amount' => 'float',
-            'remind_patient' => 'boolean'
+            'remind_patient' => 'boolean',
         ];
     }
 
@@ -66,6 +66,7 @@ class Appointment extends Model
     {
         return $this->hasOne(ReviewRating::class);
     }
+
     public function work_place(): BelongsTo
     {
         return $this->belongsTo(WorkPlace::class);

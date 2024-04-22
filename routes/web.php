@@ -1,13 +1,13 @@
 <?php
 
+use App\Enums\User\UserRoleEnum;
+use App\Http\Controllers\DownloadPrescriptionController;
+use App\Http\Controllers\DownloadTimetableController;
+use App\Http\Controllers\PdfController;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Enums\User\UserRoleEnum;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PdfController;
-use App\Http\Controllers\DownloadTimetableController;
-use App\Http\Controllers\DownloadPrescriptionController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -52,7 +52,7 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request) {
         $user->doctor()->create([]);
     }
 
-    if (!Auth::loginUsingId($user->id)) {
+    if (! Auth::loginUsingId($user->id)) {
         abort(403);
     }
 

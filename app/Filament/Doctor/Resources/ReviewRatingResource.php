@@ -2,39 +2,38 @@
 
 namespace App\Filament\Doctor\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\ReviewRating;
-use Filament\Facades\Filament;
-use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Blade;
-use Filament\Support\Enums\IconPosition;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Doctor\Resources\ReviewRatingResource\Pages;
-use App\Filament\Doctor\Resources\ReviewRatingResource\RelationManagers;
+use App\Models\ReviewRating;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Support\Enums\IconPosition;
+use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
 class ReviewRatingResource extends Resource
 {
     protected static ?string $model = ReviewRating::class;
+
     protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     public static function getNavigationLabel(): string
     {
         return __('doctor/patient.rating-and-reviews');
     }
+
     public static function getModelLabel(): string
     {
         return __('doctor/patient.rating-and-reviews');
     }
+
     public static function getNavigationGroup(): ?string
     {
         return __('doctor/doctor.navigation-group');
     }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -65,7 +64,7 @@ class ReviewRatingResource extends Resource
                     ->wrap()
                     ->extraAttributes([
                         'class' => 'max-w-sm break-words',
-                    ])
+                    ]),
 
             ])
             ->filters([
@@ -106,6 +105,7 @@ class ReviewRatingResource extends Resource
     {
         return false;
     }
+
     public static function canDelete(Model $record): bool
     {
         return false;

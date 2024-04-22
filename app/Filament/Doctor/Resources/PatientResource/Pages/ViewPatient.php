@@ -9,10 +9,12 @@ use Filament\Resources\Pages\ViewRecord;
 class ViewPatient extends ViewRecord
 {
     protected static string $resource = PatientResource::class;
+
     public function getTitle(): string
     {
         return __('doctor/patient.model-label');
     }
+
     protected function getHeaderActions(): array
     {
         return [

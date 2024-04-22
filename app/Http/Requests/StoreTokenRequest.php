@@ -28,15 +28,15 @@ class StoreTokenRequest extends FormRequest
             'device_id' => 'required',
         ];
     }
+
     public function messages(): array
     {
         return [
             'phone.required' => __('doctor/api.phone-required'),
             'password.required' => __('auth.password'),
-            'device_id.required' => __('doctor/api.somethin-weng-wrong')
+            'device_id.required' => __('doctor/api.somethin-weng-wrong'),
         ];
     }
-
 
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {

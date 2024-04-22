@@ -62,8 +62,7 @@ class DocumentsForValidationsRelationManager extends RelationManager
                             ->validationMessages([
                                 'required' => __('doctor/relation/document-for-validation.form-documents-document-required'),
                             ]),
-                    ])
-
+                    ]),
 
             ]);
     }

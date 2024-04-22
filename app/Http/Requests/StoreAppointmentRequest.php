@@ -30,6 +30,7 @@ class StoreAppointmentRequest extends FormRequest
             'motif' => ['nullable', 'string'],
         ];
     }
+
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {
         $errorMessage = $validator->errors()->all()[0];

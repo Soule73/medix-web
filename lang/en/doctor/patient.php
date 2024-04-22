@@ -26,6 +26,4 @@ return [
     'rating' => 'Rating',
     'rating-and-reviews' => 'Patient Ratings & Reviews',
 
-
-
 ];

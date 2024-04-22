@@ -2,27 +2,24 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use Exception;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Http\Resources\PatientInfoRessource;
-use Illuminate\Validation\ValidationException;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\ValidationException;
 
 class ProfileController extends Controller
 {
-
     /**
      * Update the user's profile information.
      *
-     * @param  ProfileUpdateRequest $request
      * @throws Exception|HttpResponseException
-     * @return JsonResponse
      */
     public function update(ProfileUpdateRequest $request): JsonResponse
     {
@@ -40,6 +37,7 @@ class ProfileController extends Controller
                 'city_id' => $request->city_id,
                 'addresse' => $request->addresse,
             ]);
+
             return response()->json(new PatientInfoRessource($request->user()));
         } catch (Exception $e) {
             $code = 500;
@@ -53,9 +51,9 @@ class ProfileController extends Controller
     /**
      * update user oneSignal Id for notification
      *
-     * @param  Request $request
-     * @throws Exception|HttpResponseException
      * @return JsonResponse
+     *
+     * @throws Exception|HttpResponseException
      */
     public function updateOneSignalId(Request $request)
     {
@@ -77,10 +75,10 @@ class ProfileController extends Controller
             throw new HttpResponseException(response()->json($e->getMessage(), $code));
         }
     }
+
     /**
      * update user default lang in application and preference lang to send notification
      *
-     * @param  Request $request
      * @return JsonResponse|HttpResponseException
      */
     public function updateDefaultLang(Request $request): JsonResponse
@@ -107,7 +105,6 @@ class ProfileController extends Controller
     /**
      * Update user avatar
      *
-     * @param  Request  $request
      * @return JsonResponse|HttpResponseException
      */
     public function updateAvatar(Request $request): JsonResponse
@@ -134,7 +131,6 @@ class ProfileController extends Controller
     /**
      * update user current password
      *
-     * @param  Request $request
      * @return JsonResponse|HttpResponseException
      */
     public function updatePassword(Request $request): JsonResponse

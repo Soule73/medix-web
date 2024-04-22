@@ -2,20 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\Doctor\DoctorStatusEnum;
-use App\Enums\User\UserSexEnum;
-use App\Filament\Resources\DoctorResource\Pages;
+use Filament\Tables;
 use App\Models\Doctor;
 use Filament\Forms\Form;
-use Filament\Infolists\Components;
+use Filament\Tables\Table;
+use App\Enums\User\UserSexEnum;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
+use Filament\Infolists\Components;
+use App\Enums\Doctor\DoctorStatusEnum;
+use App\Filament\Resources\DoctorResource\Pages;
+use Illuminate\Database\Eloquent\Builder;
 
 class DoctorResource extends Resource
 {
-
     protected static ?int $navigationSort = 1;
 
     protected static ?string $model = Doctor::class;
@@ -49,9 +49,13 @@ class DoctorResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_fullname')->label(__('doctor/doctor.full-name')),
-                Tables\Columns\TextColumn::make('user.email')->label(__('doctor/doctor.user-email')),
-                Tables\Columns\TextColumn::make('user.sex')->label(__('doctor/doctor.user-sex'))
+                Tables\Columns\TextColumn::make('user_fullname')
+                    ->searchable()
+                    ->label(__('doctor/doctor.full-name')),
+                Tables\Columns\TextColumn::make('user.email')
+                    ->searchable()
+                    ->label(__('doctor/doctor.user-email')),
+                Tables\Columns\TextColumn::make('user_sex')->label(__('doctor/doctor.user-sex'))
                     ->color('info')
                     ->formatStateUsing(function (UserSexEnum $state) {
                         return $state === UserSexEnum::MAN ? __('doctor/doctor.user-sex-man') : __('doctor/doctor.user-sex-woman');
@@ -68,7 +72,11 @@ class DoctorResource extends Resource
 
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        DoctorStatusEnum::VALIDATED->value => __('doctor/doctor.doctor-status-validated'),
+                        DoctorStatusEnum::NOTVALIDATED->value => __('doctor/doctor.doctor-status-notvalidated'),
+                    ])
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -98,7 +106,7 @@ class DoctorResource extends Resource
 
                                     ]),
                                     Components\Group::make([
-                                        Components\TextEntry::make('user.sex')
+                                        Components\TextEntry::make('user_sex')
                                             ->label(__('doctor/doctor.user-sex'))
                                             ->color('info')
                                             ->formatStateUsing(function (UserSexEnum $state) {

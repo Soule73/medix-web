@@ -2,13 +2,12 @@
 
 namespace App\Livewire\Pulse;
 
-use Livewire\Attributes\Url;
-use Livewire\Attributes\Lazy;
-use Laravel\Pulse\Livewire\Card;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Facades\Config;
+use Laravel\Pulse\Livewire\Card;
 use Laravel\Pulse\Recorders\SlowRequests as SlowRequestsRecorder;
+use Livewire\Attributes\Lazy;
+use Livewire\Attributes\Url;
 
 /**
  * @internal
@@ -56,8 +55,8 @@ class CustomSlowRequests extends Card
             'runAt' => $runAt,
             'slowRequests' => $slowRequests,
             'config' => [
-                'threshold' => Config::get('pulse.recorders.' . SlowRequestsRecorder::class . '.threshold'),
-                'sample_rate' => Config::get('pulse.recorders.' . SlowRequestsRecorder::class . '.sample_rate'),
+                'threshold' => Config::get('pulse.recorders.'.SlowRequestsRecorder::class.'.threshold'),
+                'sample_rate' => Config::get('pulse.recorders.'.SlowRequestsRecorder::class.'.sample_rate'),
             ],
         ]);
     }

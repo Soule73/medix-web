@@ -52,7 +52,7 @@ class CustomSlowOutgoingRequests extends Card
         return view('livewire.pulse.custom-slow-outgoing-requests', [
             'time' => $time,
             'runAt' => $runAt,
-            'config' => Config::get('pulse.recorders.' . SlowOutgoingRequestsRecorder::class),
+            'config' => Config::get('pulse.recorders.'.SlowOutgoingRequestsRecorder::class),
             'slowOutgoingRequests' => $slowOutgoingRequests,
         ]);
     }

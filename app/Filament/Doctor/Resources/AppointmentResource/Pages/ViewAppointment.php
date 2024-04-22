@@ -2,32 +2,32 @@
 
 namespace App\Filament\Doctor\Resources\AppointmentResource\Pages;
 
-use Filament\Forms;
-use Filament\Actions;
-use Filament\Forms\Form;
-use App\Models\Appointment;
-use Filament\Notifications\Notification;
-use Filament\Resources\Pages\ViewRecord;
 use App\Enums\Appointment\AppointmentStatusEnum;
 use App\Filament\Doctor\Resources\AppointmentResource;
 use App\Jobs\SendAppointmentPaiementCorfirmedNotificationToPatient;
 use App\Jobs\SendAppointmentStausNotificationToPatient;
+use App\Models\Appointment;
+use Filament\Actions;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\ViewRecord;
 
 class ViewAppointment extends ViewRecord
 {
     protected static string $resource = AppointmentResource::class;
+
     public function getTitle(): string
     {
         return __('doctor/appointment.model-label');
     }
-
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\EditAction::make()
                 ->after(function (Appointment $record) {
-                    if ($record->payed && !$record->confirm_payed) {
+                    if ($record->payed && ! $record->confirm_payed) {
                         SendAppointmentPaiementCorfirmedNotificationToPatient::dispatch(appointment: $record);
                     }
                 })
@@ -76,7 +76,6 @@ class ViewAppointment extends ViewRecord
                                 && $this->record->status !== AppointmentStatusEnum::ACCEPTED
                         )
                         ->icon('heroicon-s-check-circle'),
-
 
                     Actions\Action::make('finished')
                         ->label(__('doctor/appointment.finished'))

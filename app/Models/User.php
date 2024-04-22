@@ -56,7 +56,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, 
         'phone',
         'first_name',
         'sex',
-        'default_lang'
+        'default_lang',
     ];
 
     /**
@@ -99,9 +99,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, 
 
     public function getFullnameAttribute(): string
     {
-        $first_name = $this->first_name ? $this->first_name . ' ' : '';
+        $first_name = $this->first_name ? $this->first_name.' ' : '';
 
-        return $first_name . $this->name;
+        return $first_name.$this->name;
     }
 
     public function getFilamentName(): string

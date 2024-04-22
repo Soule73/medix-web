@@ -47,5 +47,5 @@ return [
     'form-confirm-payed' => 'Veuillez cocher la case pour confirmer le paiement',
 
     'answer-appointment' => 'Répondre',
-    'delete-this-file' => 'Supprimer cette fichier'
+    'delete-this-file' => 'Supprimer cette fichier',
 ];

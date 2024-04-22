@@ -20,7 +20,6 @@ class AppointmentBar extends ChartWidget
     }
     // protected static ?string $heading = 'Chart';
 
-
     protected function getData(): array
     {
         $activeFilter = $this->filter;

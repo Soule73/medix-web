@@ -2,12 +2,12 @@
 
 namespace App\Livewire\Pulse;
 
-use Laravel\Pulse\Livewire\Concerns;
-use Livewire\Attributes\Lazy;
-use Laravel\Pulse\Livewire\Card;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Facades\Config;
+use Laravel\Pulse\Livewire\Card;
+use Laravel\Pulse\Livewire\Concerns;
 use Laravel\Pulse\Recorders\CacheInteractions as CacheInteractionsRecorder;
+use Livewire\Attributes\Lazy;
 
 /**
  * @internal
@@ -52,7 +52,7 @@ class CustomCache extends Card
             'keyTime' => $keyTime,
             'keyRunAt' => $keyRunAt,
             'cacheKeyInteractions' => $cacheKeyInteractions,
-            'config' => Config::get('pulse.recorders.' . CacheInteractionsRecorder::class),
+            'config' => Config::get('pulse.recorders.'.CacheInteractionsRecorder::class),
         ]);
     }
 }

@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers\Api;
 
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use Illuminate\Notifications\DatabaseNotification;
 use App\Http\Resources\PatientNotificationRessource;
+use Exception;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Notifications\DatabaseNotification;
 
 class NotificationApiController extends Controller
 {
-
     public function index(Request $request): AnonymousResourceCollection|JsonResponse
     {
         try {
             $notifications = DatabaseNotification::where('notifiable_id', $request->user()->id)
                 ->orderBy('created_at', 'desc')
                 ->paginate(15);
+
             return PatientNotificationRessource::collection($notifications);
         } catch (Exception $e) {
             $code = 500;
@@ -29,6 +29,7 @@ class NotificationApiController extends Controller
             throw new HttpResponseException(response()->json($e->getMessage(), $code));
         }
     }
+
     public function update(string $notificationId, Request $request): AnonymousResourceCollection|JsonResponse
     {
         try {
@@ -36,6 +37,7 @@ class NotificationApiController extends Controller
             $notifications = DatabaseNotification::where('notifiable_id', $request->user()->id)
                 ->orderBy('created_at', 'desc')
                 ->paginate(15);
+
             return PatientNotificationRessource::collection($notifications);
         } catch (Exception $e) {
             $code = 500;
@@ -45,6 +47,7 @@ class NotificationApiController extends Controller
             throw new HttpResponseException(response()->json($e->getMessage(), $code));
         }
     }
+
     public function destroy(string $notificationId, Request $request): AnonymousResourceCollection|JsonResponse
     {
         try {
@@ -52,6 +55,7 @@ class NotificationApiController extends Controller
             $notifications = DatabaseNotification::where('notifiable_id', $request->user()->id)
                 ->orderBy('created_at', 'desc')
                 ->paginate(15);
+
             return PatientNotificationRessource::collection($notifications);
         } catch (Exception $e) {
             $code = 500;

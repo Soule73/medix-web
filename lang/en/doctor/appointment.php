@@ -47,6 +47,6 @@ return [
     'form-confirm-payed' => 'Please check the box to confirm payment',
 
     'answer-appointment' => 'Answer',
-    'delete-this-file' => 'Delete this file'
+    'delete-this-file' => 'Delete this file',
 
 ];

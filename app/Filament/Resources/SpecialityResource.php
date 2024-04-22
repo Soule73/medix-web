@@ -64,7 +64,7 @@ class SpecialityResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('description')
-                    ->formatStateUsing(fn (string $state): string => __('doctor/relation/speciality.' . Speciality::where('description', $state)->first()->name . '.description'))
+                    ->formatStateUsing(fn (string $state): string => __('doctor/relation/speciality.'.Speciality::where('description', $state)->first()->name.'.description'))
                     ->label(__('doctor/relation/speciality.description')),
             ])->defaultSort('name', 'asc')
             ->filters([

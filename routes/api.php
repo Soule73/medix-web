@@ -1,15 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\DoctorApiController;
-use App\Http\Controllers\Api\Auth\TokenController;
-use App\Http\Controllers\Api\RegisteredController;
 use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\Auth\ProfileController;
+use App\Http\Controllers\Api\Auth\TokenController;
+use App\Http\Controllers\Api\DoctorApiController;
 use App\Http\Controllers\Api\NotificationApiController;
+use App\Http\Controllers\Api\RegisteredController;
 use App\Http\Controllers\Api\ReviewRatingApiController;
-use App\Http\Controllers\Api\Auth\RegisteredUserController;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')
     ->group(function () {
@@ -105,8 +104,6 @@ Route::post('test', function () {
     //     ->orderBy('distance', 'asc')
     //     ->get();
 
-
-
     //   {
     //     "id": 1,
     //     "name": "Clinique SDS",
@@ -133,13 +130,11 @@ Route::post('test', function () {
         * cos(radians(longitude) - radians(?))
         + sin(radians(?))
         * sin(radians(latitude)))) AS distance", [$userLatitude, $userLongitude, $userLatitude])
-        ->havingRaw("distance < ?", [50]) // Vous pouvez ajuster la distance maximale ici
+        ->havingRaw('distance < ?', [50]) // Vous pouvez ajuster la distance maximale ici
         ->orderBy('distance', 'asc')
         ->get();
 
-
     //
-
 
     return $nearestPlaces;
 });

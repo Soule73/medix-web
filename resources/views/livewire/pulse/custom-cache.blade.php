@@ -1,12 +1,25 @@
 @php
 use Illuminate\Support\Str;
+
+$replacements = [
+'7 days' => __('pulse.7-days'),
+'24 hours' => __('pulse.24-hour'),
+'hour' => __('pulse.a-hour'),
+'6 hours' => __('pulse.6-hour'),
+];
+
+$period = $this->periodForHumans();
+
+foreach ($replacements as $search => $replace) {
+$period = Str::replace($search, $replace, $period);
+}
 @endphp
 <x-pulse::card :cols="$cols" :rows="$rows" :class="$class">
     <x-pulse::card-header name="{{ __('pulse.cache-card-header-name') }}"
         title="{{ __('pulse.cache-card-header-title',['allTime'=>number_format($allTime),'allRunAt'=>$allRunAt,'keyTime'=>number_format($keyTime),'keyRunAt'=>$keyRunAt]) }}"
-        details="past {{ $this->periodForHumans() }}" details="{{
+        details="past {{ $period }}" details="{{
         __('pulse.cache-card-header-details',[
-        'periodForHumans'=>$this->periodForHumans()])
+        'periodForHumans'=>$period])
         }}">
         <x-slot:icon>
             <x-pulse::icons.rocket-launch />
@@ -28,7 +41,7 @@ use Illuminate\Support\Str;
 
     <x-pulse::scroll :expand="$expand" wire:poll.5s="">
         @if ($allCacheInteractions->hits === 0 && $allCacheInteractions->misses === 0)
-        <x-pulse::no-results />
+        <x-custom-no-results />
         @else
         <div class="flex flex-col gap-6">
             <div class="grid grid-cols-3 gap-3 text-center">

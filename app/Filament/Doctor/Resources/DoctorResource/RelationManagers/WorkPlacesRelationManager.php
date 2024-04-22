@@ -3,12 +3,12 @@
 namespace App\Filament\Doctor\Resources\DoctorResource\RelationManagers;
 
 use Filament\Forms;
-use Filament\Tables;
 use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Illuminate\Support\Str;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Enums\MaxWidth;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 class WorkPlacesRelationManager extends RelationManager
 {
@@ -67,9 +67,9 @@ class WorkPlacesRelationManager extends RelationManager
                                                 ->numeric(),
                                         ])]
 
-                                )
-                            ])
-                    ])
+                                ),
+                            ]),
+                    ]),
             ]);
     }
 

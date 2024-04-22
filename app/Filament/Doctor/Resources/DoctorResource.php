@@ -135,22 +135,22 @@ class DoctorResource extends Resource
                                                 $value = '';
 
                                                 switch ($state) {
-                                                    case LangEnum::FR: {
-                                                            $value = 'Français';
-                                                            break;
-                                                        }
-                                                    case LangEnum::EN: {
-                                                            $value = 'English';
-                                                            break;
-                                                        }
+                                                    case LangEnum::FR:
+                                                        $value = 'Français';
+                                                        break;
+
+                                                    case LangEnum::EN:
+                                                        $value = 'English';
+                                                        break;
+
                                                     default:
                                                         $value = 'العربية';
                                                         break;
                                                 }
+
                                                 return $value;
                                             })
                                             ->label(__('doctor/doctor.default-lang')),
-
 
                                     ]),
                                     Components\Group::make([
@@ -167,7 +167,7 @@ class DoctorResource extends Resource
                                             ->color('success'),
                                         Components\TextEntry::make('year_experience')->label(__('doctor/doctor.year-experience'))
                                             // ->badge()
-                                            ->iconColor("info")
+                                            ->iconColor('info')
                                             ->size(TextEntrySize::Large)
                                             ->icon('heroicon-o-academic-cap')
                                             ->iconPosition('after')

@@ -3,17 +3,17 @@
 namespace App\Filament\Doctor\Resources\DoctorResource\RelationManagers;
 
 use App\Models\Day;
+use App\Models\WorkingHour;
 use Filament\Forms;
-use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\WorkingHour;
-use Illuminate\Contracts\View\View;
-use Filament\Support\Enums\MaxWidth;
-use Illuminate\Database\Eloquent\Builder;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Enums\MaxWidth;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 
 class WorkingHoursRelationManager extends RelationManager
 {
@@ -93,7 +93,7 @@ class WorkingHoursRelationManager extends RelationManager
                             ->preload(),
                         Forms\Components\Select::make('day_id')
                             ->options(Day::orderBy('id')->pluck('id', 'name')->mapWithKeys(function ($id, $name): array {
-                                return [$id => __('day.' . $name)];
+                                return [$id => __('day.'.$name)];
                             })->toArray())
                             ->preload()
                             ->label(__('doctor/relation/working-hour.day'))
@@ -140,7 +140,6 @@ class WorkingHoursRelationManager extends RelationManager
                                 },
                             ]),
                     ]),
-
 
             ]);
     }

@@ -2,17 +2,16 @@
 
 namespace App\Jobs;
 
-use Exception;
-use App\Models\Appointment;
-use Illuminate\Support\Str;
-use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Log;
 use Berkayk\OneSignal\OneSignalFacade;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
+use Exception;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class RemindPatientForAppointment implements ShouldQueue
 {
@@ -37,7 +36,7 @@ class RemindPatientForAppointment implements ShouldQueue
 
                 $oneSignalId = $patient->one_signal_id;
                 $defaultLang = $patient->default_lang->value;
-                $id = "#" . Str::padLeft($appointment->id, 8, '0');
+                $id = '#'.Str::padLeft($appointment->id, 8, '0');
                 $status = __('doctor/notification.appointment-id', ['id' => $id], $defaultLang ?? config('app.locale'));
                 $bodyRemind = __('doctor/notification.remind-patient-notification');
 
@@ -55,7 +54,7 @@ class RemindPatientForAppointment implements ShouldQueue
                     $appointment->save();
                 }
             } catch (Exception $e) {
-                Log::error("Error RemindPatientForAppointment: " . $e->getMessage());
+                Log::error('Error RemindPatientForAppointment: '.$e->getMessage());
             }
         }
     }

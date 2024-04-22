@@ -2,18 +2,18 @@
 
 namespace App\Jobs;
 
-use Exception;
+use App\Enums\Appointment\AppointmentStatusEnum;
 use App\Models\Appointment;
-use Illuminate\Support\Str;
-use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Log;
 use Berkayk\OneSignal\OneSignalFacade;
-use Illuminate\Queue\SerializesModels;
+use Exception;
 use Filament\Notifications\Notification;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Enums\Appointment\AppointmentStatusEnum;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class SendAppointmentStausNotificationToPatient implements ShouldQueue
 {
@@ -36,10 +36,10 @@ class SendAppointmentStausNotificationToPatient implements ShouldQueue
 
             $oneSignald = $patient->one_signal_id;
             $default_lang = $patient->default_lang->value;
-            $id = "#" . Str::padLeft($this->appointment->id, 8, '0');
+            $id = '#'.Str::padLeft($this->appointment->id, 8, '0');
             $status = __('doctor/notification.appointment-id', ['id' => $id], $default_lang ?? config('app.locale'));
 
-            $doctor = $this->appointment->doctor->user_fullname . " " . $this->appointment->doctor->user_fullname;
+            $doctor = $this->appointment->doctor->user_fullname.' '.$this->appointment->doctor->user_fullname;
             $body_accepted = __('doctor/notification.appointment-accepted', ['doctor' => $doctor], $default_lang ?? config('app.locale'));
             $body_refused = __('doctor/notification.appointment-refused', ['doctor' => $doctor], $default_lang ?? config('app.locale'));
             $body_finished = __('doctor/notification.appointment-finished', ['doctor' => $doctor], $default_lang ?? config('app.locale'));
@@ -51,7 +51,7 @@ class SendAppointmentStausNotificationToPatient implements ShouldQueue
                     ->body($body_accepted)
                     ->icon('heroicon-o-bell')
                     ->success()
-                    ->viewData(["record" => $this->appointment->id])
+                    ->viewData(['record' => $this->appointment->id])
                     ->sendToDatabase($patient);
 
                 if ($oneSignald) {
@@ -63,13 +63,13 @@ class SendAppointmentStausNotificationToPatient implements ShouldQueue
                         headings: $status,
                     );
                 }
-            } else if ($this->appointment->status === AppointmentStatusEnum::FINISHED) {
+            } elseif ($this->appointment->status === AppointmentStatusEnum::FINISHED) {
                 Notification::make()
                     ->title($status)
                     ->body($body_finished)
                     ->icon('heroicon-o-bell')
                     ->success()
-                    ->viewData(["record" => $this->appointment->id])
+                    ->viewData(['record' => $this->appointment->id])
                     ->sendToDatabase($patient);
 
                 if ($oneSignald) {
@@ -88,7 +88,7 @@ class SendAppointmentStausNotificationToPatient implements ShouldQueue
                     ->body($body_refused)
                     ->icon('heroicon-o-bell')
                     ->danger()
-                    ->viewData(["record" => $this->appointment->id])
+                    ->viewData(['record' => $this->appointment->id])
                     ->sendToDatabase($this->appointment->patient->user);
 
                 if ($oneSignald) {
@@ -102,7 +102,7 @@ class SendAppointmentStausNotificationToPatient implements ShouldQueue
                 }
             }
         } catch (Exception $e) {
-            Log::error("Error SendAppointmentStausNotificationToPatient: " . $e->getMessage());
+            Log::error('Error SendAppointmentStausNotificationToPatient: '.$e->getMessage());
         }
     }
 }

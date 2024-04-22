@@ -22,6 +22,7 @@ class SetLocalInApi
         if ($lang) {
             App::setLocale($lang);
         }
+
         return $next($request);
     }
 }

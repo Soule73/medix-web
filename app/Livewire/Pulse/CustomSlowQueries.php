@@ -48,12 +48,13 @@ class CustomSlowQueries extends Card
             }),
             $this->orderBy,
         );
+
         return view('livewire.pulse.custom-slow-queries', [
             'time' => $time,
             'runAt' => $runAt,
             'config' => [
                 'highlighting' => true,
-                ...Config::get('pulse.recorders.' . SlowQueriesRecorder::class),
+                ...Config::get('pulse.recorders.'.SlowQueriesRecorder::class),
             ],
             'slowQueries' => $slowQueries,
         ]);

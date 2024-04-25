@@ -22,28 +22,30 @@ class DoctorApiController extends Controller
         try {
             $doctors =
                 Doctor::where('status', DoctorStatusEnum::VALIDATED->value)
-                    ->withAvg('review_ratings', 'star')
-                    ->when($search, function ($query) use ($search) {
-                        $query->whereHas('user', function ($query) use ($search) {
-                            $query->where('name', 'like', '%'.$search.'%')
-                                ->orWhere('first_name', 'like', '%'.$search.'%');
-                        });
-                    })
-                    ->when($request->query('specialities_ids'), function ($query) use ($request) {
-                        $query->whereHas('specialities', function ($query) use ($request) {
-                            return $query->whereIn('specialities.id', json_decode($request->query('specialities_ids')));
-                        });
-                    })
-                    ->when($request->query('specialityId'), function ($query) use ($request) {
-                        $query->whereHas('specialities', function ($query) use ($request) {
-                            return $query->where('specialities.id', '=', $request->query('specialityId'));
-                        });
-                    })
-                    ->withCount(['working_hours', 'patientsCount'])
-                    ->having('working_hours_count', '>', 0)
-                    ->orderBy('review_ratings_avg_star', 'desc')
-                    ->orderBy('patients_count_count', 'desc')
-                    ->paginate(10);
+                ->withAvg('review_ratings', 'star')
+                ->whereHas('specialities')
+                ->whereHas('working_hours')
+                ->when($search, function ($query) use ($search) {
+                    $query->whereHas('user', function ($query) use ($search) {
+                        $query->where('name', 'like', '%' . $search . '%')
+                            ->orWhere('first_name', 'like', '%' . $search . '%');
+                    });
+                })
+                ->when($request->query('specialities_ids'), function ($query) use ($request) {
+                    $query->whereHas('specialities', function ($query) use ($request) {
+                        return $query->whereIn('specialities.id', json_decode($request->query('specialities_ids')));
+                    });
+                })
+                ->when($request->query('specialityId'), function ($query) use ($request) {
+                    $query->whereHas('specialities', function ($query) use ($request) {
+                        return $query->where('specialities.id', '=', $request->query('specialityId'));
+                    });
+                })
+                ->withCount(['working_hours', 'patientsCount'])
+                ->having('working_hours_count', '>', 0)
+                ->orderBy('review_ratings_avg_star', 'desc')
+                ->orderBy('patients_count_count', 'desc')
+                ->paginate(10);
 
             return DoctorRessource::collection(
                 $doctors
@@ -58,13 +60,13 @@ class DoctorApiController extends Controller
         try {
             $doctors =
                 Doctor::where('status', DoctorStatusEnum::VALIDATED->value)
-                    ->withAvg('review_ratings', 'star')
-                    ->whereIn('id', json_decode($request->query('doctorsId')))
-                    ->withCount(['working_hours', 'patientsCount'])
-                    ->having('working_hours_count', '>', 0)
-                    ->orderBy('review_ratings_avg_star', 'desc')
-                    ->orderBy('patients_count_count', 'desc')
-                    ->paginate();
+                ->withAvg('review_ratings', 'star')
+                ->whereIn('id', json_decode($request->query('doctorsId')))
+                ->withCount(['working_hours', 'patientsCount'])
+                ->having('working_hours_count', '>', 0)
+                ->orderBy('review_ratings_avg_star', 'desc')
+                ->orderBy('patients_count_count', 'desc')
+                ->paginate();
 
             return DoctorRessource::collection(
                 $doctors
@@ -81,7 +83,7 @@ class DoctorApiController extends Controller
             $doctor = Doctor::where('status', DoctorStatusEnum::VALIDATED->value)
                 ->with([
                     'review_ratings' => function ($query) {
-                        $query->with('patient');
+                        $query->with('patient')->limit(10);
                     },
                     'working_hours' => function ($query) {
                         $query->with([

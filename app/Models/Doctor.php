@@ -66,7 +66,8 @@ class Doctor extends Model
 
     public function qualifications(): HasMany
     {
-        return $this->hasMany(Qualification::class);
+        return $this->hasMany(Qualification::class)
+            ->orderBy('procurement_date', 'desc');
     }
 
     public function documents_for_validations(): HasMany
@@ -91,7 +92,8 @@ class Doctor extends Model
 
     public function review_ratings(): HasMany
     {
-        return $this->hasMany(ReviewRating::class);
+        return $this->hasMany(ReviewRating::class)
+            ->orderBy('created_at');
     }
 
     public function getUserFullnameAttribute()
@@ -108,16 +110,15 @@ class Doctor extends Model
         return $this->hasManyThrough(Patient::class, Appointment::class, 'doctor_id', 'id', 'id', 'patient_id');
     }
 
+    // Compter le nombre de patients uniques pour un médecin donné
     public function patientsCount()
     {
         return $this->hasMany(Appointment::class)
             ->where('status', AppointmentStatusEnum::ACCEPTED->value)
-            ->orWhere('status', AppointmentStatusEnum::ACCEPTED->value)
+            ->orWhere('status', AppointmentStatusEnum::FINISHED->value)
             ->where('date_appointment', '<=', now())
             ->select('doctor_id', DB::raw('count(distinct patient_id) as aggregate'))
             // ->selectRaw('doctor_id, count(*) as aggregate')
             ->groupBy('doctor_id');
     }
-    // Compter le nombre de patients uniques pour un médecin donné
-
 }

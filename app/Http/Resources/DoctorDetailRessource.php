@@ -17,6 +17,14 @@ class DoctorDetailRessource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'qualifications' => $this->qualifications->map(function ($qualification) {
+                return [
+                    'id' => $qualification->id,
+                    'name' => $qualification->name,
+                    'institute' => $qualification->institute,
+                    'procurement_date' => $qualification->procurement_date,
+                ];
+            }),
             'working_hours' => $this->grouped_working_hours->map(function ($dayGroup, $dayName) {
                 return $dayGroup->map(function ($workingHour) {
                     return [

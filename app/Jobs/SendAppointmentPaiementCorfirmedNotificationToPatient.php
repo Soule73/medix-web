@@ -32,11 +32,11 @@ class SendAppointmentPaiementCorfirmedNotificationToPatient implements ShouldQue
     {
         try {
             $patient = $this->appointment->patient->user;
-            $default_lang = $patient->default_lang->value;
+            $patientDefaultLang = $patient->default_lang->value;
             $oneSignald = $patient->one_signal_id;
-            $id = '#'.Str::padLeft($this->appointment->id, 8, '0');
-            $status = __('doctor/notification.appointment-id', ['id' => $id], $default_lang ?? config('app.locale'));
-            $content = __('doctor/notification.payement-confirmed', ['amount' => $this->appointment->amount], $default_lang ?? config('app.locale'));
+            $id = '#' . Str::padLeft($this->appointment->id, 8, '0');
+            $status = __('doctor/notification.appointment-id', ['id' => $id], $patientDefaultLang);
+            $content = __('doctor/notification.payement-confirmed', ['amount' => $this->appointment->amount], $patientDefaultLang);
             if ($this->appointment->payed) {
                 Notification::make()
                     ->title($status)
@@ -59,7 +59,7 @@ class SendAppointmentPaiementCorfirmedNotificationToPatient implements ShouldQue
                 }
             }
         } catch (Exception $e) {
-            Log::error('Error SendAppointmentPaiementCorfirmedNotificationToPatient: '.$e->getMessage());
+            Log::error('Error SendAppointmentPaiementCorfirmedNotificationToPatient: ' . $e->getMessage());
         }
     }
 }

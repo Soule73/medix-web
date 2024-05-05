@@ -37,14 +37,14 @@ class SendNotificationToDoctorPatient implements ShouldQueue
             $doctor = $this->appointment->doctor->user;
             $oneSignalId = $patient->one_signal_id;
 
-            $patient_default_lang = $patient->default_lang->value;
-            $doctor_default_lang = $doctor->default_lang->value;
+            $patientDefaultLang = $patient->default_lang->value;
+            $doctorDefaultLang = $doctor->default_lang->value;
 
-            $doctorNotificationTitle = __('doctor/notification.doctor-new-appointment-title', [], $doctor_default_lang ?? config('app.locale'));
-            $doctorNotificationBody = __('doctor/notification.doctor-new-appointment-body', [], $doctor_default_lang ?? config('app.locale'));
+            $doctorNotificationTitle = __('doctor/notification.doctor-new-appointment-title', [], $doctorDefaultLang);
+            $doctorNotificationBody = __('doctor/notification.doctor-new-appointment-body', [], $doctorDefaultLang);
 
-            $patientNotificationTitle = __(__('doctor/notification.patient-appointment-pending-title', [], $patient_default_lang ?? config('app.locale')));
-            $patientNotificationBody = __(__('doctor/notification.patient-appointment-pending-body', ['id' => '#'.Str::padLeft($this->appointment->id, 8, '0')], $patient_default_lang ?? config('app.locale')));
+            $patientNotificationTitle = __(__('doctor/notification.patient-appointment-pending-title', [], $patientDefaultLang));
+            $patientNotificationBody = __(__('doctor/notification.patient-appointment-pending-body', ['id' => '#' . Str::padLeft($this->appointment->id, 8, '0')], $patientDefaultLang));
 
             Notification::make()
                 ->title($doctorNotificationTitle)
@@ -81,7 +81,7 @@ class SendNotificationToDoctorPatient implements ShouldQueue
                 );
             }
         } catch (Exception $e) {
-            Log::error('Error SendNotificationToDoctorPatient: '.$e->getMessage());
+            Log::error('Error SendNotificationToDoctorPatient: ' . $e->getMessage());
         }
     }
 }

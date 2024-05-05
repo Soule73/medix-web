@@ -44,8 +44,7 @@ class PatientResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Fieldset::make('patient')
-                    ->label(__('doctor/patient.model-label'))
+                Forms\Components\Grid::make(1)
                     ->schema([
                         Forms\Components\TextInput::make('id_cnss')
                             ->label(__('doctor/patient.id-cnss')),
@@ -53,7 +52,7 @@ class PatientResource extends Resource
                             ->prefixIcon('heroicon-o-calendar-days')
                             ->native(false)
                             ->label(__('doctor/patient.user-birthday')),
-                    ]),
+                    ])
             ]);
     }
 

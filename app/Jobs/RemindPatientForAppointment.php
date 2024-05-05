@@ -35,9 +35,9 @@ class RemindPatientForAppointment implements ShouldQueue
                 $patient = $appointment->patient->user;
 
                 $oneSignalId = $patient->one_signal_id;
-                $defaultLang = $patient->default_lang->value;
-                $id = '#'.Str::padLeft($appointment->id, 8, '0');
-                $status = __('doctor/notification.appointment-id', ['id' => $id], $defaultLang ?? config('app.locale'));
+                $patientDefaultLang = $patient->default_lang->value;
+                $id = '#' . Str::padLeft($appointment->id, 8, '0');
+                $status = __('doctor/notification.appointment-id', ['id' => $id], $patientDefaultLang);
                 $bodyRemind = __('doctor/notification.remind-patient-notification');
 
                 if ($oneSignalId) {
@@ -54,7 +54,7 @@ class RemindPatientForAppointment implements ShouldQueue
                     $appointment->save();
                 }
             } catch (Exception $e) {
-                Log::error('Error RemindPatientForAppointment: '.$e->getMessage());
+                Log::error('Error RemindPatientForAppointment: ' . $e->getMessage());
             }
         }
     }

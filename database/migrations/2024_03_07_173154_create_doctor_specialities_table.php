@@ -11,11 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('review_ratings', function (Blueprint $table) {
-            $table->foreignId('appointment_id')
-                ->nullable()
-                ->constrained('appointments')
+        Schema::create('doctor_speciality', function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignId('doctor_id')
+                ->constrained('doctors')
                 ->cascadeOnDelete();
+            $table->foreignId('speciality_id')
+                ->constrained('specialities');
+
+            $table->timestamps();
         });
     }
 
@@ -24,8 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('review_ratings', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('doctor_speciality');
     }
 };

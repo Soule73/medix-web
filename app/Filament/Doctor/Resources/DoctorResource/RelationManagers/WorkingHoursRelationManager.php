@@ -44,7 +44,13 @@ class WorkingHoursRelationManager extends RelationManager
                         Forms\Components\Select::make('work_place_id')
                             ->label(__('doctor/relation/work-place.modelLabel'))
                             ->createOptionModalHeading('Ajout un lieu de travail')
-
+                            ->relationship(
+                                'work_place',
+                                'name',
+                                fn (Builder $query) => $query->where('doctor_id', auth()->user()->doctor->id)
+                            )
+                            ->searchable()
+                            ->preload()
                             ->createOptionForm([
 
                                 Forms\Components\Hidden::make('doctor_id'),
@@ -84,16 +90,10 @@ class WorkingHoursRelationManager extends RelationManager
 
                                         ),
                                     ]),
-                            ])->relationship(
-                                'work_place',
-                                'name',
-                                fn (Builder $query) => $query->where('doctor_id', auth()->user()->doctor->id)
-                            )
-                            ->searchable()
-                            ->preload(),
+                            ]),
                         Forms\Components\Select::make('day_id')
                             ->options(Day::orderBy('id')->pluck('id', 'name')->mapWithKeys(function ($id, $name): array {
-                                return [$id => __('day.'.$name)];
+                                return [$id => __('day.' . $name)];
                             })->toArray())
                             ->preload()
                             ->label(__('doctor/relation/working-hour.day'))
@@ -107,8 +107,8 @@ class WorkingHoursRelationManager extends RelationManager
                                     return function ($attribute, $value, $fail) use ($get) {
                                         $day_id = $get('day_id');
                                         $doctor_id = auth()->user()->doctor->id;
-                                        $existingHours = WorkingHour::where('day_id', $day_id)
-                                            ->where('doctor_id', $doctor_id)
+                                        $existingHours = WorkingHour::where('doctor_id', $doctor_id)
+                                            ->where('day_id', $day_id)
                                             ->get();
                                         foreach ($existingHours as $hour) {
                                             if ($value >= $hour->start_at && $value <= $hour->end_at) {

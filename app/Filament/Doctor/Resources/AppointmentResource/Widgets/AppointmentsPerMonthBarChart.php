@@ -38,8 +38,10 @@ class AppointmentsPerMonthBarChart extends ChartWidget
 
         $appointmentsData = collect($months)->mapWithKeys(function ($month) use ($doctorId) {
             $monthName = $month->translatedFormat('F');
-            $acceptedOrFinishied = Appointment::where('status', AppointmentStatusEnum::FINISHED->value)
-                ->orWhere('status', AppointmentStatusEnum::ACCEPTED->value)
+            $acceptedOrFinishied = Appointment::whereIn('status', [
+                AppointmentStatusEnum::ACCEPTED->value,
+                AppointmentStatusEnum::FINISHED->value
+            ])
                 ->where('doctor_id', $doctorId)
                 ->whereMonth('created_at', $month->month)
                 ->count();
@@ -60,7 +62,7 @@ class AppointmentsPerMonthBarChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => __('doctor/appointment.accepted').'/'.__('doctor/appointment.finished'),
+                    'label' => __('doctor/appointment.accepted') . '/' . __('doctor/appointment.finished'),
                     'data' => $appointmentsData->pluck('acceptedOrFinishied')->values(),
                     'backgroundColor' => '#36A2EB',
                     'borderColor' => '#9BD0F5',

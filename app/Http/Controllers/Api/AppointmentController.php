@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
+use Exception;
+use App\Models\Doctor;
+use App\Models\Appointment;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreAppointmentRequest;
-use App\Http\Requests\UpdateAppointmentRequest;
 use App\Http\Resources\AppointmentRessource;
 use App\Jobs\SendNotificationToDoctorPatient;
-use App\Models\Appointment;
-use App\Models\Doctor;
-use Exception;
+use App\Http\Requests\StoreAppointmentRequest;
+use App\Http\Requests\UpdateAppointmentRequest;
+use App\Jobs\SendConfirmRescheduleDateNotificationToDoctor;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AppointmentController extends Controller
@@ -113,5 +114,25 @@ class AppointmentController extends Controller
         Appointment::findOrFail($id)->delete();
 
         return response()->json('', 204);
+    }
+
+    /**
+     * confirm the specified appointment reschedule date by id from storage.
+     *
+     * @param  string|int  $id
+     */
+    public function confirmAppoinment(string $id): JsonResponse
+    {
+        $appointment = Appointment::findOrFail($id);
+        $rescheduleDate = $appointment->reschedule_date;
+        // $addByDoctor = $appointment->add_by_doctor;
+        if ($rescheduleDate) {
+            $appointment->date_appointment = $rescheduleDate;
+            $appointment->reschedule_date = null;
+            $appointment->save();
+        }
+        SendConfirmRescheduleDateNotificationToDoctor::dispatch(appointment: $appointment);
+
+        return response()->json(new AppointmentRessource(Appointment::find($id)));
     }
 }

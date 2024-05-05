@@ -2,15 +2,16 @@
 
 namespace App\Filament\Doctor\Resources\PatientResource\RelationManagers;
 
-use App\Models\PatientRecord;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\PatientRecord;
 use Illuminate\Contracts\View\View;
+use Filament\Support\Enums\MaxWidth;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class PatientRecordsRelationManager extends RelationManager
 {
@@ -69,6 +70,7 @@ class PatientRecordsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->selectable(false)
             ->paginated()
             ->emptyStateIcon('heroicon-o-document-text')
             ->emptyStateHeading(__('doctor/prescription.no-document-found'))
@@ -76,15 +78,28 @@ class PatientRecordsRelationManager extends RelationManager
             // ->recordTitleAttribute('observation')
             ->columns([
                 Tables\Columns\TextColumn::make('observation')
+                    ->searchable()
                     ->extraAttributes([
                         'class' => 'max-w-sm break-words',
                     ])
                     ->wrap(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->searchable()
+                    ->sortable()
                     ->label(__('doctor/appointment.created-at'))
                     ->dateTime(session()->get('local') !== 'en' ? 'd M Y H:i:s' : null),
-                Tables\Columns\TextColumn::make('doctor.user_fullname'),
+                Tables\Columns\TextColumn::make('doctor.user_fullname')
+                    ->searchable(query: function (Builder $query, $search) {
+                        return $query->whereHas('doctor', function ($query) use ($search) {
+                            $query->whereHas('user', function ($query) use ($search) {
+                                $query->where('name', 'like', '%' . $search . '%')
+                                    ->orWhere('first_name', 'like', '%' . $search . '%');
+                            });
+                        });
+                    })
+                    ->label(__('doctor/doctor.navigation-group')),
             ])
+            ->defaultSort('created_at')
             ->filters([
                 //
             ])

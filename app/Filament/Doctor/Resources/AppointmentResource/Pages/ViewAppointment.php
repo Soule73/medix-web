@@ -2,16 +2,18 @@
 
 namespace App\Filament\Doctor\Resources\AppointmentResource\Pages;
 
-use App\Enums\Appointment\AppointmentStatusEnum;
-use App\Filament\Doctor\Resources\AppointmentResource;
-use App\Jobs\SendAppointmentPaiementCorfirmedNotificationToPatient;
-use App\Jobs\SendAppointmentStausNotificationToPatient;
-use App\Models\Appointment;
-use Filament\Actions;
+use Carbon\Carbon;
 use Filament\Forms;
+use Filament\Actions;
 use Filament\Forms\Form;
+use App\Models\Appointment;
+use App\Models\WorkingHour;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
+use App\Enums\Appointment\AppointmentStatusEnum;
+use App\Filament\Doctor\Resources\AppointmentResource;
+use App\Jobs\SendAppointmentStausNotificationToPatient;
+use App\Jobs\SendAppointmentPaiementCorfirmedNotificationToPatient;
 
 class ViewAppointment extends ViewRecord
 {
@@ -27,7 +29,7 @@ class ViewAppointment extends ViewRecord
         return [
             Actions\EditAction::make()
                 ->after(function (Appointment $record) {
-                    if ($record->payed && ! $record->confirm_payed) {
+                    if ($record->payed && !$record->confirm_payed) {
                         SendAppointmentPaiementCorfirmedNotificationToPatient::dispatch(appointment: $record);
                     }
                 })
@@ -47,19 +49,43 @@ class ViewAppointment extends ViewRecord
                         ->form(function (Form $form) {
                             return $form->schema(
                                 [
+                                    Forms\Components\DateTimePicker::make('reschedule_date')
+                                        ->label(__('doctor/appointment.suggest-another-date-that-would-suit-you'))
+                                        ->minDate(now()->addDay())
+                                        ->rules([
+                                            function () {
+                                                return function ($attribute, $value, $fail) {
+                                                    $doctorId = auth()->user()->doctor->id;
+                                                    $dayOfWeek = Carbon::parse($value)->dayOfWeek();
+                                                    $getHour = Carbon::parse($value)->format('H:i');
+
+                                                    $existingHours = WorkingHour::where('doctor_id', $doctorId)
+                                                        ->where('day_id', $dayOfWeek)
+                                                        ->get();
+                                                    foreach ($existingHours as $hour) {
+                                                        if ($getHour >= $hour->start_at && $getHour <= $hour->end_at) {
+                                                            return null;
+                                                        }
+                                                    }
+                                                    return $fail(__("doctor/appointment.selected-day-or-time-is-not-available-on-your-schedule"));
+                                                };
+                                            }
+                                        ]),
                                     Forms\Components\Textarea::make('accepted_message')
                                         ->autofocus()
                                         ->autosize()
                                         ->maxLength(1500)
                                         ->placeholder(__('doctor/appointment.form-accepted-action'))
-                                        ->label(__('doctor/appointment.form-accepted-action-label')),
+                                        ->label(__('doctor/appointment.form-accepted-action-label'))
                                 ]
                             );
                         })
                         ->action(function (Appointment $record, array $data) {
-
                             if ($accepted_message = $data['accepted_message']) {
                                 $record->accepted_message = $accepted_message;
+                            }
+                            if ($data['reschedule_date']) {
+                                $record->reschedule_date = $data['reschedule_date'];
                             }
                             $record->status = AppointmentStatusEnum::ACCEPTED->value;
                             $record->save();
@@ -100,8 +126,11 @@ class ViewAppointment extends ViewRecord
 
                     Actions\Action::make('refuse')
                         ->label(__('doctor/appointment.action-refused'))
-                        ->visible($this->record->date_appointment > now()
-                            && $this->record->status !== AppointmentStatusEnum::DENIED)
+                        ->visible(
+                            !$this->record->add_by_doctor &&
+                                $this->record->date_appointment > now()
+                                && $this->record->status !== AppointmentStatusEnum::DENIED
+                        )
                         ->requiresConfirmation()
                         ->action(function (Appointment $record, array $data) {
                             $record->status = AppointmentStatusEnum::DENIED->value;

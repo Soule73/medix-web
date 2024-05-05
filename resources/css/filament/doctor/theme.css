@@ -1,5 +1,5 @@
 @import '/vendor/filament/filament/resources/css/theme.css';
-@import '/vendor/laravel/pulse/resources/css/pulse.css';
+/* @import '/vendor/laravel/pulse/resources/css/pulse.css'; */
 @import './pulse.css';
 @config 'tailwind.config.js';
 
@@ -56,6 +56,10 @@ aside .fi-sidebar-nav {
 :is(.dark aside header.fi-sidebar-header, ) {
     @apply !bg-[#1d1c1f] !shadow-none
 }
+
+/* :is(.dark .fi-input) {
+    @apply !bg-transparent
+} */
 
 aside header.fi-sidebar-header {
     @apply !bg-[#ffffff] !shadow-none

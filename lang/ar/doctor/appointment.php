@@ -48,4 +48,16 @@ return [
     'answer-appointment' => 'إجابة',
     'delete-this-file' => 'احذف هذا الملف',
 
+
+    'selected-day-or-time-is-not-available-on-your-schedule' => "اليوم أو الوقت المحدد غير متوفر في الجدول الزمني الخاص بك.",
+    'suggest-another-date-that-would-suit-you' => 'اقترح موعدًا آخر يناسبك.',
+    'waiting-for-confirmation-from-the-patient' => 'في انتظار التأكيد من المريض',
+    'you-postponed-the-date-to' => 'لقد أجلت الموعد إلى',
+    "follow-up-appointment-scheduled-by-you" => "موعد المتابعة المقرر من قبلك"
+
+
+
+
+
+
 ];

@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\Doctor\DoctorStatusEnum;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\AllSpecialitiesRessource;
-use App\Http\Resources\DoctorDetailRessource;
-use App\Http\Resources\DoctorRessource;
+use Exception;
 use App\Models\Doctor;
 use App\Models\Speciality;
-use Exception;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Enums\Doctor\DoctorStatusEnum;
+use App\Http\Resources\DoctorRessource;
+use App\Http\Resources\DoctorDetailRessource;
+use App\Http\Resources\AllSpecialitiesRessource;
+use App\Http\Resources\WorkPlacesLocationRessource;
+use App\Models\WorkPlace;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class DoctorApiController extends Controller
 {
@@ -54,6 +57,22 @@ class DoctorApiController extends Controller
             throw new HttpResponseException(response()->json(['message' => $e->getMessage()]));
         }
     }
+    public function find(Request $request, string $id)
+    {
+        try {
+            $doctor =
+                Doctor::where('status', DoctorStatusEnum::VALIDATED->value)
+                ->withAvg('review_ratings', 'star')
+                ->whereHas('specialities')
+                ->whereHas('working_hours')
+                ->withCount(['working_hours', 'patientsCount'])
+                ->findOrFail($id);
+
+            return new DoctorRessource($doctor);
+        } catch (Exception $e) {
+            throw new HttpResponseException(response()->json(['message' => $e->getMessage()]));
+        }
+    }
 
     public function favoris(Request $request)
     {
@@ -74,6 +93,29 @@ class DoctorApiController extends Controller
         } catch (Exception $e) {
             throw new HttpResponseException(response()->json(['message' => $e->getMessage()]));
         }
+    }
+
+    public function workPlcaLocation(Request $request)
+    {
+        // Coordonnées de l'utilisateur
+        $userLatitude = $request->query('userLatitude');
+        $userLongitude = $request->query('userLongitude');
+        if ($userLatitude && $userLongitude) {
+            $radius_of_the_earth = 6371; //représente le rayon moyen de la Terre en kilomètres
+            $nearestPlaces = WorkPlace
+                ::selectRaw("*,
+            ($radius_of_the_earth * acos(cos(radians(?))
+            * cos(radians(latitude))
+            * cos(radians(longitude) - radians(?))
+            + sin(radians(?))
+            * sin(radians(latitude)))) AS distance", [$userLatitude, $userLongitude, $userLatitude])
+                ->havingRaw('distance < ?', [50]) // Vous pouvez ajuster la distance maximale ici
+                ->orderBy('distance', 'asc')
+                ->get();
+
+            return WorkPlacesLocationRessource::collection($nearestPlaces);
+        }
+        return [];
     }
 
     public function show(Request $request, string $id)

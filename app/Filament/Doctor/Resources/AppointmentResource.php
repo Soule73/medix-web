@@ -335,8 +335,18 @@ class AppointmentResource extends Resource
                                             return $color;
                                         }),
                                     Components\TextEntry::make('date_appointment')
+                                        ->visible(function (Appointment $record): bool {
+                                            return !$record->reschedule_date;
+                                        })
                                         ->dateTime(session()->get('local') !== 'en' ? 'd M Y H:i:s' : null)
                                         ->label(__('doctor/appointment.date')),
+                                    Components\TextEntry::make('reschedule_date')
+                                        ->visible(function (Appointment $record): bool {
+                                            return $record->reschedule_date !== null;
+                                        })
+                                        ->dateTime(session()->get('local') !== 'en' ? 'd M Y H:i:s' : null)
+                                        ->label(fn (Appointment $record) => $record->add_by_doctor ? __('doctor/appointment.follow-up-appointment-scheduled-by-you') : ('doctor/appointment.you-postponed-the-date-to'))
+                                        ->suffix(' (' . __('doctor/appointment.waiting-for-confirmation-from-the-patient') . ')'),
 
                                 ]),
                                 Components\Group::make([

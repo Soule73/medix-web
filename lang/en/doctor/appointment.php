@@ -49,4 +49,16 @@ return [
     'answer-appointment' => 'Answer',
     'delete-this-file' => 'Delete this file',
 
+
+    'selected-day-or-time-is-not-available-on-your-schedule' => "The selected day or time is not available on your schedule.",
+    'suggest-another-date-that-would-suit-you' => 'Suggest another date that would suit you.',
+    'waiting-for-confirmation-from-the-patient' => 'Waiting for confirmation from the patient',
+    'you-postponed-the-date-to' => 'You postponed the date to',
+    "follow-up-appointment-scheduled-by-you" => "Follow-up appointment scheduled by you"
+
+
+
+
+
+
 ];

@@ -7,7 +7,6 @@ use App\Http\Controllers\Api\DoctorApiController;
 use App\Http\Controllers\Api\NotificationApiController;
 use App\Http\Controllers\Api\RegisteredController;
 use App\Http\Controllers\Api\ReviewRatingApiController;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')
@@ -42,7 +41,9 @@ Route::middleware('auth:sanctum')
                     Route::post('/', 'index')->name('doctor.all');
                     Route::post('/specialities', 'specialities')->name('specialities');
                     Route::post('/{id}', 'show')->name('doctor.show');
+                    Route::post('/find/{id}', 'find')->name('doctor.show');
                 });
+                Route::post('/work-place-location', 'workPlcaLocation')->name('work-place-location');
             });
 
         // appointment route
@@ -52,6 +53,7 @@ Route::middleware('auth:sanctum')
                 Route::post('/', 'index')->name('appointment.all');
                 Route::post('/store', 'store')->name('appointment.store');
                 Route::patch('/update/{id}', 'update')->name('appointment.update');
+                Route::patch('/confirm-appoinment/{id}', 'confirmAppoinment')->name('appointment.rescheduleDate');
                 Route::delete('/delete/{id}', 'destroy')->name('appointment.delete');
                 Route::post('/{id}', 'show')->name('appointment.show');
             });
@@ -81,60 +83,3 @@ Route::post('auth/verify', [TokenController::class, 'verify']);
 Route::patch('auth/reset-password', [TokenController::class, 'resetPassword']);
 
 Route::post('user/register', RegisteredController::class);
-
-Route::post('test', function () {
-
-    // Coordonnées de l'utilisateur
-    // 18.088945457940532, -15.968176894599264 IUP
-    // 18.089488175382456, -15.96637114229834 ISCAE
-    // 18.08564334386589, -15.974666964409305 Musée natianal
-    // 18.074848511638955, -15.958123711150273 depot camara
-    $userLatitude = '18.074848511638955';
-    $userLongitude = '-15.958123711150273';
-    $radius_of_the_earth = 6371; //représente le rayon moyen de la Terre en kilomètres
-    // Requête pour sélectionner les lieux les plus proches
-    // $nearestPlaces = DB::table('work_places')
-    //     ->whereNotNull(['latitude', 'longitude'])
-    //     ->select(DB::raw("*,
-    //     ($radius_of_the_earth * acos(cos(radians($userLatitude))
-    //     * cos(radians(latitude))
-    //     * cos(radians(longitude) - radians($userLongitude))
-    //     + sin(radians($userLatitude))
-    //     * sin(radians(latitude)))) AS distance"))
-    //     ->orderBy('distance', 'asc')
-    //     ->get();
-
-    //   {
-    //     "id": 1,
-    //     "name": "Clinique SDS",
-    //     "address": "Capital Ilot G,Tevragh-zeina",
-    //     "latitude": 18.088945457940532,
-    //     "longitude": -15.968176894599264,
-    //     "doctor_id": 1,
-    //     "city_id": 1,
-    //     "created_at": "2024-03-09 23:05:02",
-    //     "updated_at": "2024-03-12 14:51:49",
-    //     "distance": 1.8937587036112338
-    //   }
-
-    //       {
-    //     "name": "Clinique SDS",
-    //     "latitude": 18.088945457940532,
-    //     "longitude": -15.968176894599264,
-    //     "distance": 1.8937587036112338
-    //   }
-    $nearestPlaces = DB::table('work_places')
-        ->selectRaw("*,
-        ($radius_of_the_earth * acos(cos(radians(?))
-        * cos(radians(latitude))
-        * cos(radians(longitude) - radians(?))
-        + sin(radians(?))
-        * sin(radians(latitude)))) AS distance", [$userLatitude, $userLongitude, $userLatitude])
-        ->havingRaw('distance < ?', [50]) // Vous pouvez ajuster la distance maximale ici
-        ->orderBy('distance', 'asc')
-        ->get();
-
-    //
-
-    return $nearestPlaces;
-});

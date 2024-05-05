@@ -48,7 +48,13 @@ class DoctorResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->selectable(false)
             ->columns([
+                Tables\Columns\ImageColumn::make('user.avatar')
+                    ->disk('local')
+                    ->circular()
+                    ->label('')
+                    ->placeholder(__('doctor/patient.no-photo')),
                 Tables\Columns\TextColumn::make('user_fullname')
                     ->searchable()
                     ->label(__('doctor/doctor.full-name')),

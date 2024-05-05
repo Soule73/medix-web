@@ -22,6 +22,7 @@ class Appointment extends Model
         'type',
         'status',
         'date_appointment',
+        'reschedule_date',
         'motif',
         'reason_for_refusal',
         'accepted_message',
@@ -29,6 +30,7 @@ class Appointment extends Model
         'work_place_id',
         'doctor_id',
         'patient_id',
+        'add_by_doctor',
         'amount',
         'discount',
         'confirm_payed',
@@ -49,6 +51,7 @@ class Appointment extends Model
             'discount' => 'float',
             'amount' => 'float',
             'remind_patient' => 'boolean',
+            'add_by_doctor' => 'boolean',
         ];
     }
 

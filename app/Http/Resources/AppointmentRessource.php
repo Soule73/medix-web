@@ -20,6 +20,8 @@ class AppointmentRessource extends JsonResource
             'id' => $this->id,
             'patient_id' => $this->patient_id,
             'date_appointment' => $this->date_appointment,
+            'reschedule_date' => $this->reschedule_date,
+            'add_by_doctor' => $this->add_by_doctor,
             'reason_for_refusal' => $this->reason_for_refusal,
             'accepted_message' => $this->accepted_message,
             'motif' => $this->motif,

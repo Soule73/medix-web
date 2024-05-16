@@ -34,6 +34,8 @@ class WorkPlacesLocationRessource extends JsonResource
             'doctor_email' => $this->doctor->user->email,
             'doctor_phone' => $this->doctor->user->phone,
             'doctor_professional_title' => $this->doctor->professional_title,
+            'specialities' => $this->doctor->specialities->pluck('name')->toArray(),
+
         ];
     }
 }

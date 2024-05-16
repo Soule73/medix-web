@@ -52,7 +52,7 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request) {
         $user->doctor()->create([]);
     }
 
-    if (! Auth::loginUsingId($user->id)) {
+    if (!Auth::loginUsingId($user->id)) {
         abort(403);
     }
 

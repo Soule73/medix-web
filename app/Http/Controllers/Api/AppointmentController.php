@@ -125,7 +125,6 @@ class AppointmentController extends Controller
     {
         $appointment = Appointment::findOrFail($id);
         $rescheduleDate = $appointment->reschedule_date;
-        // $addByDoctor = $appointment->add_by_doctor;
         if ($rescheduleDate) {
             $appointment->date_appointment = $rescheduleDate;
             $appointment->reschedule_date = null;

@@ -6,7 +6,6 @@ use Exception;
 use App\Models\Doctor;
 use App\Models\Speciality;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Enums\Doctor\DoctorStatusEnum;
 use App\Http\Resources\DoctorRessource;

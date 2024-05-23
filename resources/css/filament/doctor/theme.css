@@ -37,11 +37,7 @@ aside {
     @apply !bg-transparent
 }
 
-:is(
-
-    /* .dark .fi-sidebar-header, */
-    /* .dark aside.header.fi-sidebar-header, */
-    .dark .fi-sidebar-nav) {
+:is(.dark .fi-sidebar-nav) {
     @apply shadow-md !bg-gradient-to-b to-[#000000] from-[#1d1c1f]
 }
 

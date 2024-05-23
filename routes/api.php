@@ -40,8 +40,8 @@ Route::middleware('auth:sanctum')
                 Route::prefix('doctor')->group(function () {
                     Route::post('/', 'index')->name('doctor.all');
                     Route::post('/specialities', 'specialities')->name('specialities');
-                    Route::post('/{id}', 'show')->name('doctor.show');
-                    Route::post('/find/{id}', 'find')->name('doctor.show');
+                    Route::post('/{id}', 'show')->name('doctor.details');
+                    Route::post('/find/{id}', 'find')->name('doctor.find');
                 });
                 Route::post('/work-place-location', 'workPlcaLocation')->name('work-place-location');
             });

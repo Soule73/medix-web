@@ -41,7 +41,7 @@ aside {
 
     /* .dark .fi-sidebar-header, */
     /* .dark aside.header.fi-sidebar-header, */
-    .dark .fi-sidebar-nav, ) {
+    .dark .fi-sidebar-nav) {
     @apply shadow-md !bg-gradient-to-b to-[#000000] from-[#1d1c1f]
 }
 
@@ -53,7 +53,7 @@ aside .fi-sidebar-nav {
     @apply xl:rounded-bl-lg xl:rounded-br-lg
 }
 
-:is(.dark aside header.fi-sidebar-header, ) {
+:is(.dark aside header.fi-sidebar-header) {
     @apply !bg-[#1d1c1f] !shadow-none
 }
 

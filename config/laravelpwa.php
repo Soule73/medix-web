@@ -4,7 +4,7 @@ return [
     'name' => 'Medix',
     'manifest' => [
         'name' => env('APP_NAME', 'Medix'),
-        'short_name' => 'PWA',
+        'short_name' => 'Medix',
         'start_url' => '/',
         'background_color' => '#ffffff',
         'theme_color' => '#000000',

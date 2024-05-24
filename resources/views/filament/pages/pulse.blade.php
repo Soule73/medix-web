@@ -1,6 +1,7 @@
 <x-filament-panels::page>
     <livewire:pulse.custom-period-selector />
     <div class="mx-auto grid default:grid-cols-6 default:gap-6 container">
+        <livewire:pulse.servers cols="full" />
 
         <livewire:pulse.custom-usage cols="2" rows="2" />
 

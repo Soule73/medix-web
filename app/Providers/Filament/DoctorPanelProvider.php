@@ -34,11 +34,12 @@ class DoctorPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Blue,
             ])
-            ->login()
-            ->emailVerification()
             // ->viteTheme("resources/css/app.css")
             ->viteTheme('resources/css/filament/doctor/theme.css')
-            ->registration(Register::class)->emailVerification()
+            ->login()
+            ->registration(Register::class)
+            ->emailVerification()
+            ->passwordReset()
             ->profile()
             ->brandLogo(fn () => view('vendor.filament.components.brand'))
             ->userMenuItems([

@@ -29,6 +29,11 @@ class ReviewRatingResource extends Resource
         return __('doctor/patient.rating-and-reviews');
     }
 
+    public static function getPluralLabel(): string
+    {
+        return __('doctor/patient.rating-and-reviews');
+    }
+
     public static function getNavigationGroup(): ?string
     {
         return __('doctor/doctor.navigation-group');

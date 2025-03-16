@@ -2,17 +2,16 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Tables;
+use App\Enums\Doctor\DoctorStatusEnum;
+use App\Enums\User\UserSexEnum;
+use App\Filament\Resources\DoctorResource\Pages;
 use App\Models\Doctor;
 use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Enums\User\UserSexEnum;
+use Filament\Infolists\Components;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Filament\Infolists\Components;
-use App\Enums\Doctor\DoctorStatusEnum;
-use App\Filament\Resources\DoctorResource\Pages;
-use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class DoctorResource extends Resource
 {
@@ -82,7 +81,7 @@ class DoctorResource extends Resource
                     ->options([
                         DoctorStatusEnum::VALIDATED->value => __('doctor/doctor.doctor-status-validated'),
                         DoctorStatusEnum::NOTVALIDATED->value => __('doctor/doctor.doctor-status-notvalidated'),
-                    ])
+                    ]),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

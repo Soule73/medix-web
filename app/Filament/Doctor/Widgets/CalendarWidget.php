@@ -24,7 +24,7 @@ class CalendarWidget extends FullCalendarWidget
             ->map(function (Appointment $appointment) {
                 return [
                     'id' => $appointment->id,
-                    'title' => 'RDV avec : ' . $appointment->patient->user_fullname,
+                    'title' => 'RDV avec : '.$appointment->patient->user_fullname,
                     'start' => $appointment->date_appointment,
                     'url' => AppointmentResource::getUrl(name: 'view', parameters: ['record' => $appointment]),
                 ];

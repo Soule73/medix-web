@@ -95,7 +95,7 @@
                         \Carbon\Carbon::parse($prescription->created_at)->format('d/m/Y') }}
                     </span>
                     <span class=" text-lg">
-                        ID : <span class=" font-bold">#{{ Str::padLeft($prescription->id, 8, '0') }}</span>
+                        ID : <span class=" font-bold">#{{ Str::padLeft(strval($prescription->id), 8, '0') }}</span>
                     </span>
                 </div>
                 <P>

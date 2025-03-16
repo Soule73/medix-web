@@ -8,6 +8,7 @@ use Filament\Actions;
 use Filament\Forms\Form;
 use App\Models\Appointment;
 use App\Models\WorkingHour;
+use Illuminate\Support\Facades\Auth;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use App\Enums\Appointment\AppointmentStatusEnum;
@@ -15,6 +16,9 @@ use App\Filament\Doctor\Resources\AppointmentResource;
 use App\Jobs\SendAppointmentStausNotificationToPatient;
 use App\Jobs\SendAppointmentPaiementCorfirmedNotificationToPatient;
 
+/**
+ * @property Appointment $record
+ */
 class ViewAppointment extends ViewRecord
 {
     protected static string $resource = AppointmentResource::class;
@@ -33,7 +37,7 @@ class ViewAppointment extends ViewRecord
                         SendAppointmentPaiementCorfirmedNotificationToPatient::dispatch(appointment: $record);
                     }
                 })
-                ->visible(fn () => $this->record->date_appointment <= now() && $this->record->status === AppointmentStatusEnum::ACCEPTED),
+                ->visible(fn() => $this->record->date_appointment <= now() && $this->record->status === AppointmentStatusEnum::ACCEPTED),
             Actions\DeleteAction::make()
                 ->icon('heroicon-s-x-circle')
                 ->visible($this->record->date_appointment <= now() && $this->record->status === AppointmentStatusEnum::PENDING),
@@ -55,7 +59,7 @@ class ViewAppointment extends ViewRecord
                                         ->rules([
                                             function () {
                                                 return function ($attribute, $value, $fail) {
-                                                    $doctorId = auth()->user()->doctor->id;
+                                                    $doctorId = Auth::user()->doctor->id;
                                                     $dayOfWeek = Carbon::parse($value)->dayOfWeek();
                                                     $getHour = Carbon::parse($value)->format('H:i');
 
@@ -67,16 +71,17 @@ class ViewAppointment extends ViewRecord
                                                             return null;
                                                         }
                                                     }
-                                                    return $fail(__("doctor/appointment.selected-day-or-time-is-not-available-on-your-schedule"));
+
+                                                    return $fail(__('doctor/appointment.selected-day-or-time-is-not-available-on-your-schedule'));
                                                 };
-                                            }
+                                            },
                                         ]),
                                     Forms\Components\Textarea::make('accepted_message')
                                         ->autofocus()
                                         ->autosize()
                                         ->maxLength(1500)
                                         ->placeholder(__('doctor/appointment.form-accepted-action'))
-                                        ->label(__('doctor/appointment.form-accepted-action-label'))
+                                        ->label(__('doctor/appointment.form-accepted-action-label')),
                                 ]
                             );
                         })

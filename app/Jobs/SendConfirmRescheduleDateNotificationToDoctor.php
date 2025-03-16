@@ -3,23 +3,20 @@
 namespace App\Jobs;
 
 use App\Models\Appointment;
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Filament\Notifications\Notification;
-use Illuminate\Queue\InteractsWithQueue;
 use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class SendConfirmRescheduleDateNotificationToDoctor implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-
     /**
      * Create a new job instance.
-     *
-     * @param Appointment $appointment
      */
     public function __construct(private Appointment $appointment)
     {

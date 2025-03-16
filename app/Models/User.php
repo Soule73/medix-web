@@ -18,6 +18,31 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * App\Model\User
+ *
+ * @property int $id
+ * @property string|null $first_name
+ * @property string $fullname
+ * @property string $name
+ * @property string|null $email
+ * @property string|null $phone
+ * @property string|null $avatar
+ * @property UserRoleEnum::string $role
+ * @property UserSexEnum::string $sex
+ * @property UserStatusEnum::string $status
+ * @property LangEnum::string $default_lang
+ * @property string|null $email_verified_at
+ * @property string|null $phone_verified_at
+ * @property string $password
+ * @property string $remember_token
+ * @property string|null $one_signal_id
+ * @property string $created_at
+ * @property string $updated_at
+ *
+ * @property Patient $patient
+ * @property Doctor $doctor
+ */
 class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -87,28 +112,53 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, 
         ];
     }
 
+    /**
+     * doctor
+     *
+     * @return HasOne<Doctor>
+     */
     public function doctor(): HasOne
     {
         return $this->hasOne(Doctor::class);
     }
 
+    /**
+     * patient
+     *
+     * @return HasOne<Patient>
+     */
     public function patient(): HasOne
     {
         return $this->hasOne(Patient::class);
     }
 
+    /**
+     * getFullnameAttribute
+     *
+     * @return string
+     */
     public function getFullnameAttribute(): string
     {
-        $first_name = $this->first_name ? $this->first_name.' ' : '';
+        $first_name = $this->first_name ? $this->first_name . ' ' : '';
 
-        return $first_name.$this->name;
+        return $first_name . $this->name;
     }
 
+    /**
+     * getFilamentName
+     *
+     * @return string
+     */
     public function getFilamentName(): string
     {
         return $this->fullname;
     }
 
+    /**
+     * isAdmin
+     *
+     * @return bool
+     */
     public function isAdmin(): bool
     {
         return $this->role === UserRoleEnum::ADMIN;

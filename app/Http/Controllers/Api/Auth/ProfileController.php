@@ -77,9 +77,11 @@ class ProfileController extends Controller
     }
 
     /**
-     * update user default lang in application and preference lang to send notification
+     * Update user default language in application and preference language to send notifications.
      *
-     * @return JsonResponse|HttpResponseException
+     * @param Request $request
+     * @return JsonResponse
+     * @throws HttpResponseException If there is a validation or server error.
      */
     public function updateDefaultLang(Request $request): JsonResponse
     {
@@ -105,7 +107,9 @@ class ProfileController extends Controller
     /**
      * Update user avatar
      *
-     * @return JsonResponse|HttpResponseException
+     * @param Request $request
+     * @return JsonResponse
+     * @throws HttpResponseException If there is a validation or server error.
      */
     public function updateAvatar(Request $request): JsonResponse
     {
@@ -131,7 +135,9 @@ class ProfileController extends Controller
     /**
      * update user current password
      *
-     * @return JsonResponse|HttpResponseException
+     * @param Request $request
+     * @return JsonResponse
+     * @throws HttpResponseException If there is a validation or server error.
      */
     public function updatePassword(Request $request): JsonResponse
     {

@@ -4,12 +4,12 @@ namespace App\Jobs;
 
 use App\Models\Appointment;
 use Berkayk\OneSignal\OneSignalFacade as OneSignal;
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
 use Filament\Notifications\Notification;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class SendNewAppointmentFollowUpNotificationToPatien implements ShouldQueue
 {
@@ -17,8 +17,6 @@ class SendNewAppointmentFollowUpNotificationToPatien implements ShouldQueue
 
     /**
      * Create a new job instance.
-     *
-     * @param Appointment $appointment
      */
     public function __construct(private Appointment $appointment)
     {

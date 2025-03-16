@@ -11,6 +11,31 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
+
+
+/**
+ * App\Model\Doctor
+ *
+ * @property int $id
+ * @property string $professional_title
+ * @property string $bio
+ * @property string $user_fullname
+ * @property double $visit_price
+ * @property DoctorStatusEnum::string $status
+ * @property User $user
+ * @property string $created_at
+ * @property int $user_id
+ * @property int $year_experience
+ * @property string $updated_at
+ *
+ * @property User $user
+ * @property ReviewRating|null $reviewRatings
+ * @property PatientRecord|null $patient_records
+ * @property Appointment[]|null $appointments
+ * @property Speciality[]|null $specialities
+ * @property Qualification[]|null $qualifications
+ * @property mixed $grouped_working_hours
+ */
 class Doctor extends Model
 {
     use HasFactory;
@@ -31,9 +56,9 @@ class Doctor extends Model
     ];
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array<string, string>
+     * @return array<string, string>
      */
     protected function casts(): array
     {
@@ -44,74 +69,150 @@ class Doctor extends Model
         ];
     }
 
+    /**
+     * user
+     *
+     * @return BelongsTo<User,Doctor>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * specialities
+     *
+     * @return BelongsToMany<Speciality>
+     */
     public function specialities(): BelongsToMany
     {
         return $this->belongsToMany(Speciality::class, 'doctor_speciality');
     }
 
+    /**
+     * appointments
+     *
+     * @return HasMany<Appointment>
+     */
     public function appointments(): HasMany
     {
         return $this->hasMany(Appointment::class);
     }
 
+    /**
+     * doctor_speciality
+     *
+     * @return HasMany<DoctorSpeciality>
+     */
     public function doctor_speciality(): HasMany
     {
         return $this->hasMany(DoctorSpeciality::class);
     }
 
+    /**
+     * qualifications
+     *
+     * @return HasMany<Qualification>
+     */
     public function qualifications(): HasMany
     {
         return $this->hasMany(Qualification::class)
             ->orderBy('procurement_date', 'desc');
     }
 
+    /**
+     * documents_for_validations
+     *
+     * @return HasMany<DocumentsForValidation>
+     */
     public function documents_for_validations(): HasMany
     {
         return $this->hasMany(DocumentsForValidation::class);
     }
 
+    /**
+     * work_places
+     *
+     * @return HasMany
+     */
+    /**
+     * work_places
+     *
+     * @return HasMany<WorkPlace>
+     */
     public function work_places(): HasMany
     {
         return $this->hasMany(WorkPlace::class);
     }
 
+    /**
+     * working_hours
+     *
+     * @return HasMany<WorkingHour>
+     */
     public function working_hours(): HasMany
     {
         return $this->hasMany(WorkingHour::class);
     }
 
+    /**
+     * patient_records
+     *
+     * @return HasMany<PatientRecord>
+     */
     public function patient_records(): HasMany
     {
         return $this->hasMany(PatientRecord::class);
     }
 
+    /**
+     * review_ratings
+     *
+     * @return HasMany<ReviewRating>
+     */
     public function review_ratings(): HasMany
     {
         return $this->hasMany(ReviewRating::class)
             ->orderBy('created_at');
     }
 
-    public function getUserFullnameAttribute()
+    /**
+     * getUserFullnameAttribute
+     *
+     * @return string|null
+     */
+    public function getUserFullnameAttribute(): string|null
     {
         return $this->user->fullname;
     }
-    public function getUserSexAttribute()
+
+    /**
+     * getUserSexAttribute
+     *
+     * @return mixed
+     */
+    public function getUserSexAttribute(): mixed
     {
         return $this->user->sex;
     }
 
-    public function patients()
+    /**
+     * patients
+     *
+     * @return mixed
+     */
+    public function patients(): mixed
     {
         return $this->hasManyThrough(Patient::class, Appointment::class, 'doctor_id', 'id', 'id', 'patient_id');
     }
 
     // Compter le nombre de patients uniques pour un médecin donné
-    public function patientsCount()
+    /**
+     * patientsCount
+     *
+     * @return mixed
+     */
+    public function patientsCount(): mixed
     {
         return $this->hasMany(Appointment::class)
             ->where('status', AppointmentStatusEnum::ACCEPTED->value)

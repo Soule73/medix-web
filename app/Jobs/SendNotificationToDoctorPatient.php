@@ -44,7 +44,7 @@ class SendNotificationToDoctorPatient implements ShouldQueue
             $doctorNotificationBody = __('doctor/notification.doctor-new-appointment-body', [], $doctorDefaultLang);
 
             $patientNotificationTitle = __(__('doctor/notification.patient-appointment-pending-title', [], $patientDefaultLang));
-            $patientNotificationBody = __(__('doctor/notification.patient-appointment-pending-body', ['id' => '#' . Str::padLeft($this->appointment->id, 8, '0')], $patientDefaultLang));
+            $patientNotificationBody = __(__('doctor/notification.patient-appointment-pending-body', ['id' => '#' . Str::padLeft(strval($this->appointment->id), 8, '0')], $patientDefaultLang));
 
             Notification::make()
                 ->title($doctorNotificationTitle)

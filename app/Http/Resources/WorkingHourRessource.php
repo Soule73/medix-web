@@ -2,9 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Models\WorkingHour;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @mixin WorkingHour */
 class WorkingHourRessource extends JsonResource
 {
     /**

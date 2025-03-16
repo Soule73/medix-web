@@ -49,11 +49,10 @@ return [
     'answer-appointment' => 'Répondre',
     'delete-this-file' => 'Supprimer cette fichier',
 
-
     'selected-day-or-time-is-not-available-on-your-schedule' => "Le jour ou l'heure sélectionnée n'est pas disponible sur votre emploi du temps.",
     'suggest-another-date-that-would-suit-you' => 'Proposer une autre date qui vous conviendrait.',
 
     'waiting-for-confirmation-from-the-patient' => 'En attente de confirmation par le patient',
     'you-postponed-the-date-to' => 'Vous avez reporté la date à',
-    "follow-up-appointment-scheduled-by-you" => "Rendez-vous de suivi planifié par vous"
+    'follow-up-appointment-scheduled-by-you' => 'Rendez-vous de suivi planifié par vous',
 ];

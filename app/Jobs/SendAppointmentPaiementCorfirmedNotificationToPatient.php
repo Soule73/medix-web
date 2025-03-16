@@ -34,7 +34,7 @@ class SendAppointmentPaiementCorfirmedNotificationToPatient implements ShouldQue
             $patient = $this->appointment->patient->user;
             $patientDefaultLang = $patient->default_lang->value;
             $oneSignald = $patient->one_signal_id;
-            $id = '#' . Str::padLeft($this->appointment->id, 8, '0');
+            $id = '#' . Str::padLeft(strval($this->appointment->id), 8, '0');
             $status = __('doctor/notification.appointment-id', ['id' => $id], $patientDefaultLang);
             $content = __('doctor/notification.payement-confirmed', ['amount' => $this->appointment->amount], $patientDefaultLang);
             if ($this->appointment->payed) {

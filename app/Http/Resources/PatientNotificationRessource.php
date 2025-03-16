@@ -3,6 +3,11 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Notifications\DatabaseNotification;
+
+/**
+ * @mixin DatabaseNotification
+ *  */
 
 class PatientNotificationRessource extends JsonResource
 {

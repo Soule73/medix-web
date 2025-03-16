@@ -1,13 +1,13 @@
 <?php
 
 use App\Enums\LangEnum;
-use App\Enums\User\UserSexEnum;
 use App\Enums\User\UserRoleEnum;
+use App\Enums\User\UserSexEnum;
 use App\Enums\User\UserStatusEnum;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {

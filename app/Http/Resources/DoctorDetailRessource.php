@@ -2,9 +2,15 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Doctor;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+/** @mixin Doctor
+ * @property mixed $grouped_working_hours
+ * @property mixed $qualifications
+ */
 
 class DoctorDetailRessource extends JsonResource
 {
@@ -17,7 +23,7 @@ class DoctorDetailRessource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'qualifications' => $this->qualifications->map(function ($qualification) {
+            'qualifications' => collect($this->qualifications)->map(function ($qualification) {
                 return [
                     'id' => $qualification->id,
                     'name' => $qualification->name,
@@ -25,7 +31,7 @@ class DoctorDetailRessource extends JsonResource
                     'procurement_date' => $qualification->procurement_date,
                 ];
             }),
-            'working_hours' => $this->grouped_working_hours->map(function ($dayGroup, $dayName) {
+            'working_hours' => collect($this->grouped_working_hours)->map(function ($dayGroup, $dayName) {
                 return $dayGroup->map(function ($workingHour) {
                     return [
                         'id' => $workingHour->id,
@@ -39,7 +45,7 @@ class DoctorDetailRessource extends JsonResource
                     ];
                 });
             }),
-            'review_ratings' => $this->review_ratings->map(function ($rating) {
+            'review_ratings' => collect($this->review_ratings)->map(function ($rating) {
                 return [
                     'id' => $rating->id,
                     'star' => $rating->star,

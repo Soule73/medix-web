@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'system-status' => "État du système",
+    'system-status' => 'État du système',
     // Cache
     'cache-card-header-name' => 'Cache',
     'cache-card-header-title' => 'Temps global : :allTime ms ; Exécution globale à :allRunAt ; Temps de la clé : :keyTime ms ; Exécution de la clé à :keyRunAt ;',

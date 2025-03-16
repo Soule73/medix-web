@@ -2,9 +2,15 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Doctor;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+/** @mixin Doctor
+ * @property mixed $patientsCount
+ * @property mixed $review_ratings_avg_star
+ */
 
 class DoctorRessource extends JsonResource
 {
@@ -21,7 +27,7 @@ class DoctorRessource extends JsonResource
             'visit_price' => sprintf('%.2f', $this->visit_price),
             'bio' => $this->bio,
             'professional_title' => $this->professional_title,
-            'specialities' => $this->specialities->pluck('name')->toArray(),
+            'specialities' => collect($this->specialities)->pluck('name')->toArray(),
             'phone' => $this->user->phone,
             'email' => $this->user->email,
             'sex' => $this->user->sex,

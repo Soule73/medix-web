@@ -6,6 +6,21 @@ use App\Enums\DocumentsForValidation\DocumentsForValidationStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Model\DocumentsForValidation
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $message
+ * @property string $path
+ * @property string $type
+ * @property DocumentsForValidationStatusEnum::string $status
+ * @property int $doctor_id
+ * @property User $user
+ * @property string $created_at
+ * @property string $updated_at
+ *
+ */
 class DocumentsForValidation extends Model
 {
     use HasFactory;
@@ -21,14 +36,13 @@ class DocumentsForValidation extends Model
         'type',
         'status',
         'path',
-
         'doctor_id',
     ];
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array<string, string>
+     * @return array<string, string>
      */
     protected function casts(): array
     {

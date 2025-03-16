@@ -19,12 +19,9 @@ class PdfController extends Controller
         $doctor = Doctor::whereHas('appointments', function ($query) use ($doctorId) {
             return $query->where('doctor_id', $doctorId);
         })->findOrFail($doctorId);
-        if ($doctor) {
-            return view('filament.doctor.components.prescription', [
-                'prescription' => $prescription,
-                'local' => $local,
-            ]);
-        }
-        abort(403);
+        return view('filament.doctor.components.prescription', [
+            'prescription' => $prescription,
+            'local' => $local,
+        ]);
     }
 }

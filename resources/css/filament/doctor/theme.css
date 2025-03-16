@@ -1,6 +1,5 @@
 @import '/vendor/filament/filament/resources/css/theme.css';
 /* @import '/vendor/laravel/pulse/resources/css/pulse.css'; */
-@import './pulse.css';
 @config 'tailwind.config.js';
 
 

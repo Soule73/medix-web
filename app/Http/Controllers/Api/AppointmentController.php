@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
-use Exception;
-use App\Models\Doctor;
-use App\Models\Appointment;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\AppointmentRessource;
-use App\Jobs\SendNotificationToDoctorPatient;
 use App\Http\Requests\StoreAppointmentRequest;
 use App\Http\Requests\UpdateAppointmentRequest;
+use App\Http\Resources\AppointmentRessource;
 use App\Jobs\SendConfirmRescheduleDateNotificationToDoctor;
+use App\Jobs\SendNotificationToDoctorPatient;
+use App\Models\Appointment;
+use App\Models\Doctor;
+use Exception;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AppointmentController extends Controller
@@ -21,7 +21,8 @@ class AppointmentController extends Controller
     /**
      * Display a listing of the appointments by patient.
      *
-     * @return AnonymousResourceCollection
+     * @param  \Illuminate\Http\Request $request
+     * @return AnonymousResourceCollection|JsonResponse
      */
     public function index(Request $request): AnonymousResourceCollection|JsonResponse
     {
@@ -46,6 +47,9 @@ class AppointmentController extends Controller
 
     /**
      * Store a newly created appointment in storage.
+     *
+     * @param  \App\Http\Requests\StoreAppointmentRequest $request
+     * @return JsonResponse
      */
     public function store(StoreAppointmentRequest $request): JsonResponse
     {
@@ -75,7 +79,9 @@ class AppointmentController extends Controller
     /**
      * Display the specified appointment by id.
      *
-     * @param  string|int  $appointmentId
+     * @param  \Illuminate\Http\Request $request
+     * @param  string $id
+     * @return JsonResponse
      */
     public function show(Request $request, string $id): JsonResponse
     {
@@ -95,7 +101,9 @@ class AppointmentController extends Controller
     /**
      * Update the specified appointment by id in storage.
      *
-     * @param  string|int  $id
+     * @param  \App\Http\Requests\UpdateAppointmentRequest $request
+     * @param  string $id
+     * @return JsonResponse
      */
     public function update(UpdateAppointmentRequest $request, string $id): JsonResponse
     {
@@ -107,7 +115,8 @@ class AppointmentController extends Controller
     /**
      * Remove the specified appointment by id from storage.
      *
-     * @param  string|int  $id
+     * @param  string $id
+     * @return JsonResponse
      */
     public function destroy(string $id): JsonResponse
     {
@@ -117,9 +126,10 @@ class AppointmentController extends Controller
     }
 
     /**
-     * confirm the specified appointment reschedule date by id from storage.
+     * Confirm the specified appointment reschedule date by id from storage.
      *
-     * @param  string|int  $id
+     * @param  string $id
+     * @return JsonResponse
      */
     public function confirmAppoinment(string $id): JsonResponse
     {

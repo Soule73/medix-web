@@ -5,7 +5,6 @@ use App\Http\Controllers\Api\Auth\ProfileController;
 use App\Http\Controllers\Api\Auth\TokenController;
 use App\Http\Controllers\Api\DoctorApiController;
 use App\Http\Controllers\Api\NotificationApiController;
-use App\Http\Controllers\Api\RegisteredController;
 use App\Http\Controllers\Api\ReviewRatingApiController;
 use Illuminate\Support\Facades\Route;
 
@@ -82,4 +81,4 @@ Route::post('auth/token', [TokenController::class, 'store']);
 Route::post('auth/verify', [TokenController::class, 'verify']);
 Route::patch('auth/reset-password', [TokenController::class, 'resetPassword']);
 
-Route::post('user/register', RegisteredController::class);
+Route::post('user/register', [TokenController::class, 'registerPatient']);

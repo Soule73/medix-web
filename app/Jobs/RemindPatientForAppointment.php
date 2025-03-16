@@ -36,7 +36,7 @@ class RemindPatientForAppointment implements ShouldQueue
 
                 $oneSignalId = $patient->one_signal_id;
                 $patientDefaultLang = $patient->default_lang->value;
-                $id = '#' . Str::padLeft($appointment->id, 8, '0');
+                $id = '#' . Str::padLeft(strval($appointment->id), 8, '0');
                 $status = __('doctor/notification.appointment-id', ['id' => $id], $patientDefaultLang);
                 $bodyRemind = __('doctor/notification.remind-patient-notification');
 

@@ -2,16 +2,16 @@
 
 namespace App\Filament\Doctor\Resources\PatientResource\RelationManagers;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
 use App\Models\PatientRecord;
-use Illuminate\Contracts\View\View;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Enums\MaxWidth;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
-use Filament\Resources\RelationManagers\RelationManager;
 
 class PatientRecordsRelationManager extends RelationManager
 {
@@ -92,8 +92,8 @@ class PatientRecordsRelationManager extends RelationManager
                     ->searchable(query: function (Builder $query, $search) {
                         return $query->whereHas('doctor', function ($query) use ($search) {
                             $query->whereHas('user', function ($query) use ($search) {
-                                $query->where('name', 'like', '%' . $search . '%')
-                                    ->orWhere('first_name', 'like', '%' . $search . '%');
+                                $query->where('name', 'like', '%'.$search.'%')
+                                    ->orWhere('first_name', 'like', '%'.$search.'%');
                             });
                         });
                     })

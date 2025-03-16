@@ -2,21 +2,22 @@
 
 namespace App\Filament\Doctor\Resources;
 
-use App\Enums\Appointment\AppointmentStatusEnum;
-use App\Enums\User\UserSexEnum;
-use App\Filament\Doctor\Resources\AppointmentResource\Pages;
-use App\Jobs\SendAppointmentStausNotificationToPatient;
-use App\Models\Appointment;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Infolists\Components;
-use Filament\Infolists\Infolist;
-use Filament\Notifications;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\Appointment;
+use Filament\Notifications;
 use Illuminate\Support\Str;
+use App\Enums\User\UserSexEnum;
+use Filament\Infolists\Infolist;
+use Filament\Resources\Resource;
+use Filament\Infolists\Components;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
+use App\Enums\Appointment\AppointmentStatusEnum;
+use App\Jobs\SendAppointmentStausNotificationToPatient;
+use App\Filament\Doctor\Resources\AppointmentResource\Pages;
 
 class AppointmentResource extends Resource
 {
@@ -64,7 +65,7 @@ class AppointmentResource extends Resource
                         Forms\Components\TextInput::make('type')->label(__('doctor/appointment.type')),
                         Forms\Components\Checkbox::make('payed')->label(__('doctor/appointment.payed'))
                             ->inline(false)
-                            ->helperText(fn ($state) => $state ? __('doctor/appointment.form-payed-confirmed') : __('doctor/appointment.form-confirm-payed')),
+                            ->helperText(fn($state) => $state ? __('doctor/appointment.form-payed-confirmed') : __('doctor/appointment.form-confirm-payed')),
                         Forms\Components\Textarea::make('motif')->label(__('doctor/appointment.motif'))
                             ->columnSpanFull(),
                     ]),
@@ -93,7 +94,7 @@ class AppointmentResource extends Resource
                     ->dateTime(session()->get('local') !== 'en' ? 'd M Y H:i:s' : null)
                     ->label(__('doctor/appointment.date')),
                 Tables\Columns\TextColumn::make('status')
-                    ->description(fn (Appointment $record) => $record->date_appointment < now() ? __('doctor/appointment.passed') : null)
+                    ->description(fn(Appointment $record) => $record->date_appointment < now() ? __('doctor/appointment.passed') : null)
                     ->label(__('doctor/doctor.doctor-status'))
                     ->badge()
                     ->formatStateUsing(function (AppointmentStatusEnum $state, Appointment $appointment) {
@@ -143,7 +144,7 @@ class AppointmentResource extends Resource
                     ->label(__('doctor/appointment.created-at')),
                 Tables\Columns\IconColumn::make('payed')
                     ->boolean()
-                    ->tooltip(fn ($state) => $state ? __('doctor/appointment.payed-yes') :
+                    ->tooltip(fn($state) => $state ? __('doctor/appointment.payed-yes') :
                         __('doctor/appointment.payed-no'))
                     ->label(__('doctor/appointment.payed')),
 
@@ -164,7 +165,7 @@ class AppointmentResource extends Resource
                     [
                         Tables\Actions\ViewAction::make()->label(__('doctor/appointment.action-view')),
                         Tables\Actions\DeleteAction::make()
-                            ->visible(fn (Appointment $record) => $record->date_appointment < now() && $record->status === AppointmentStatusEnum::PENDING),
+                            ->visible(fn(Appointment $record) => $record->date_appointment < now() && $record->status === AppointmentStatusEnum::PENDING),
                         Tables\Actions\Action::make('accept')
                             ->label(__('doctor/appointment.action-accepted'))
                             ->requiresConfirmation()
@@ -181,22 +182,22 @@ class AppointmentResource extends Resource
                                     ]
                                 );
                             })
-                            ->action(function (Appointment $records, array $data) {
+                            ->action(function (Appointment $appointment, array $data) {
                                 if ($accepted_message = $data['accepted_message']) {
-                                    $records->accepted_message = $accepted_message;
+                                    $appointment->accepted_message = $accepted_message;
                                 }
-                                $records->status = AppointmentStatusEnum::ACCEPTED->value;
-                                $records->save();
+                                $appointment->status = AppointmentStatusEnum::ACCEPTED->value;
+                                $appointment->save();
                                 Notifications\Notification::make()
                                     ->title(__('doctor/appointment.accepted-notification'))
                                     ->icon('heroicon-s-check-circle')
                                     ->success()
                                     ->send();
-                                SendAppointmentStausNotificationToPatient::dispatch(appointment: $records);
+                                SendAppointmentStausNotificationToPatient::dispatch(appointment: $appointment);
                             })
                             ->color('success')
                             ->visible(
-                                fn (Appointment $record) => $record->date_appointment > now()
+                                fn(Appointment $record) => $record->date_appointment > now()
                                     && $record->status !== AppointmentStatusEnum::ACCEPTED
                             )
                             ->icon('heroicon-s-check-circle'),
@@ -204,7 +205,7 @@ class AppointmentResource extends Resource
                         Tables\Actions\Action::make('refuse')
                             ->label(__('doctor/appointment.action-refused'))
                             ->visible(
-                                fn (Appointment $record) => $record->date_appointment > now()
+                                fn(Appointment $record) => $record->date_appointment > now()
                                     && $record->status !== AppointmentStatusEnum::DENIED
                             )
                             ->deselectRecordsAfterCompletion()
@@ -243,7 +244,7 @@ class AppointmentResource extends Resource
                         Tables\Actions\Action::make('finished')
                             ->label(__('doctor/appointment.finished'))
                             ->visible(
-                                fn (Appointment $record) => $record->date_appointment <= now()
+                                fn(Appointment $record) => $record->date_appointment <= now()
                                     && $record->status === AppointmentStatusEnum::ACCEPTED
                             )
                             ->deselectRecordsAfterCompletion()
@@ -345,7 +346,7 @@ class AppointmentResource extends Resource
                                             return $record->reschedule_date !== null;
                                         })
                                         ->dateTime(session()->get('local') !== 'en' ? 'd M Y H:i:s' : null)
-                                        ->label(fn (Appointment $record) => $record->add_by_doctor ? __('doctor/appointment.follow-up-appointment-scheduled-by-you') : ('doctor/appointment.you-postponed-the-date-to'))
+                                        ->label(fn(Appointment $record) => $record->add_by_doctor ? __('doctor/appointment.follow-up-appointment-scheduled-by-you') : ('doctor/appointment.you-postponed-the-date-to'))
                                         ->suffix(' (' . __('doctor/appointment.waiting-for-confirmation-from-the-patient') . ')'),
 
                                 ]),
@@ -355,12 +356,12 @@ class AppointmentResource extends Resource
                                         ->schema([
                                             Components\Grid::make(2)->schema([
                                                 Components\IconEntry::make('payed')
-                                                    ->boolean()->label(fn ($state) => $state ? __('doctor/appointment.payed') :
+                                                    ->boolean()->label(fn($state) => $state ? __('doctor/appointment.payed') :
                                                         __('doctor/appointment.payed-no')),
                                                 Components\TextEntry::make('amount')
-                                                    ->formatStateUsing(fn ($state) => $state > 0 ? $state : __('doctor/appointment.waiting-for-payment'))
+                                                    ->formatStateUsing(fn($state) => $state > 0 ? $state : __('doctor/appointment.waiting-for-payment'))
                                                     // ->placeholder('Non payé')
-                                                    ->suffix(fn ($state) => $state > 0 ? 'mru' : null)
+                                                    ->suffix(fn($state) => $state > 0 ? 'mru' : null)
                                                     ->label(__('doctor/appointment.amount')),
                                             ]),
                                         ])->collapsed(),
@@ -378,7 +379,7 @@ class AppointmentResource extends Resource
                                         Components\TextEntry::make('patient.user.email')->label(__('doctor/doctor.user-email')),
                                         Components\TextEntry::make('patient.user.phone')->label(__('doctor/doctor.user-phone')),
                                         Components\TextEntry::make('patient.id_cnss')
-                                            ->formatStateUsing(fn ($state) => Str::upper($state))
+                                            ->formatStateUsing(fn($state) => Str::upper($state))
                                             ->label(__('doctor/patient.id-cnss')),
 
                                     ]),
@@ -428,7 +429,7 @@ class AppointmentResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->where('doctor_id', auth()->user()->doctor->id);
+            ->where('doctor_id', Auth::user()->doctor->id);
     }
 
     public static function canCreate(): bool

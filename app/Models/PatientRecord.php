@@ -8,6 +8,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * App\Model\PatientRecord
+ *
+ * @property int $id
+ * @property string $diagnostic
+ * @property string $observation
+ * @property string $prescription
+ * @property string $path
+ * @property string $type
+ * @property int $doctor_id
+ * @property int $appointment_id
+ * @property int $patient_id
+ * @property string $created_at
+ * @property string $updated_at
+ *
+ */
 class PatientRecord extends Model
 {
     use HasFactory;
@@ -21,15 +37,17 @@ class PatientRecord extends Model
         'observation',
         'prescription',
         'diagnostic',
-        'doctor_id', 'path', 'type',
-
-        'appointment_id', 'patient_id', 'city_id',
+        'path',
+        'type',
+        'doctor_id',
+        'appointment_id',
+        'patient_id',
     ];
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array<string, string>
+     * @return array<string, string>
      */
     protected function casts(): array
     {
@@ -39,22 +57,43 @@ class PatientRecord extends Model
         ];
     }
 
+    /**
+     * patient
+     *
+     * @return BelongsTo<Patient,PatientRecord>
+     */
     public function patient(): BelongsTo
     {
         return $this->belongsTo(Patient::class);
     }
 
+    /**
+     * doctor
+     *
+     * @return BelongsTo<Doctor,PatientRecord>
+     */
     public function doctor(): BelongsTo
     {
         return $this->belongsTo(Doctor::class);
     }
 
+    /**
+     * appointment
+     *
+     * @return BelongsTo<Appointment,PatientRecord>
+     */
     public function appointment(): BelongsTo
     {
         return $this->belongsTo(Appointment::class);
     }
 
-    public function getPreinscriptionDate(DateTime $dateTime)
+    /**
+     * getPreinscriptionDate
+     *
+     * @param  DateTime $dateTime
+     * @return string
+     */
+    public function getPreinscriptionDate(DateTime $dateTime): string
     {
         $date = $dateTime;
         $local = session()->get('locale')

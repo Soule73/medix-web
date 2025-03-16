@@ -21,8 +21,6 @@ class SendAppointmentStausNotificationToPatient implements ShouldQueue
 
     /**
      * Create a new job instance.
-     *
-     * @param Appointment $appointment
      */
     public function __construct(private Appointment $appointment)
     {
@@ -31,8 +29,6 @@ class SendAppointmentStausNotificationToPatient implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
     public function handle(): void
     {
@@ -41,7 +37,7 @@ class SendAppointmentStausNotificationToPatient implements ShouldQueue
             $user = $patient->user;
             $patienDefaultLang = $user->default_lang->value;
 
-            $status = __('doctor/notification.appointment-id', ['id' => '#' . Str::padLeft($this->appointment->id, 8, '0')], $patienDefaultLang);
+            $status = __('doctor/notification.appointment-id', ['id' => '#' . Str::padLeft(strval($this->appointment->id), 8, '0')], $patienDefaultLang);
             $doctorFullName = $this->appointment->doctor->user_fullname;
 
             $notificationData = [

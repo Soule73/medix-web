@@ -6,6 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * App\Model\Qualification
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $institute
+ * @property string $procurement_date
+ * @property int $doctor_id
+ * @property string $created_at
+ * @property string $updated_at
+ *
+ */
 class Qualification extends Model
 {
     use HasFactory;
@@ -19,14 +31,13 @@ class Qualification extends Model
         'name',
         'institute',
         'procurement_date',
-
         'doctor_id',
     ];
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array<string, string>
+     * @return array<string, string>
      */
     protected function casts(): array
     {
@@ -35,6 +46,11 @@ class Qualification extends Model
         ];
     }
 
+    /**
+     * doctor
+     *
+     * @return BelongsTo<Doctor,Qualification>
+     */
     public function doctor(): BelongsTo
     {
         return $this->belongsTo(Doctor::class);

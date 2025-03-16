@@ -2,19 +2,24 @@
 
 namespace App\Filament\Doctor\Resources\AppointmentResource\RelationManagers;
 
-use App\Enums\Appointment\AppointmentStatusEnum;
-use App\Models\PatientRecord;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Notifications\Notification;
-use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
+use App\Models\Patient;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\PatientRecord;
 use Illuminate\Contracts\View\View;
+use Filament\Support\Enums\MaxWidth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Filament\Notifications\Notification;
+use App\Enums\Appointment\AppointmentStatusEnum;
+use Filament\Resources\RelationManagers\RelationManager;
 
+/**
+ * Summary of PatientRecordsRelationManager
+ * @property mixed $ownerRecord
+ */
 class PatientRecordsRelationManager extends RelationManager
 {
     protected static string $relationship = 'patient_records';
@@ -186,7 +191,7 @@ class PatientRecordsRelationManager extends RelationManager
                     Tables\Actions\DeleteAction::make()
                         ->modalHeading(function (PatientRecord $record) {
                             if ($record->path) {
-                                return __('actions.delete').' '.'cette fichier';
+                                return __('actions.delete') . ' ' . 'cette fichier';
                             }
 
                             return __('actions.delete');

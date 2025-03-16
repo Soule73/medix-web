@@ -2,8 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Speciality;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+
+/** @mixin Speciality */
 
 class AllSpecialitiesRessource extends JsonResource
 {

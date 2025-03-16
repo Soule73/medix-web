@@ -12,7 +12,7 @@ class DoctorOverview extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make(__('doctor/doctor.doctors-label'), Doctor::all()->count())
+            Stat::make(__('doctor/doctor.doctors-label'), Doctor::query()->count())
                 ->descriptionIcon('heroicon-s-user-group', 'before')
                 ->description(__('doctor/doctor.total'))
                 ->color('info'),

@@ -2,20 +2,20 @@
 
 namespace App\Filament\Doctor\Resources\PatientResource\Pages;
 
-use Carbon\Carbon;
-use Filament\Forms;
-use Filament\Actions;
-use App\Models\Patient;
-use Filament\Forms\Form;
-use App\Models\WorkPlace;
-use App\Models\Appointment;
-use App\Models\WorkingHour;
-use Filament\Support\Enums\MaxWidth;
-use Filament\Notifications\Notification;
-use Filament\Resources\Pages\ViewRecord;
 use App\Enums\Appointment\AppointmentStatusEnum;
 use App\Filament\Doctor\Resources\PatientResource;
 use App\Jobs\SendNewAppointmentFollowUpNotificationToPatien;
+use App\Models\Appointment;
+use App\Models\Patient;
+use App\Models\WorkingHour;
+use App\Models\WorkPlace;
+use Carbon\Carbon;
+use Filament\Actions;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\ViewRecord;
+use Filament\Support\Enums\MaxWidth;
 
 class ViewPatient extends ViewRecord
 {
@@ -80,10 +80,10 @@ class ViewPatient extends ViewRecord
                                     ->autosize()
                                     ->maxLength(1500)
                                     ->placeholder(__('doctor/appointment.form-accepted-action'))
-                                    ->label(__('doctor/appointment.form-accepted-action-label'))
+                                    ->label(__('doctor/appointment.form-accepted-action-label')),
                             ]
                         );
-                })
+                }),
 
         ];
     }
@@ -102,6 +102,7 @@ class ViewPatient extends ViewRecord
                 return null;
             }
         }
-        return $fail(__("doctor/appointment.selected-day-or-time-is-not-available-on-your-schedule"));
+
+        return $fail(__('doctor/appointment.selected-day-or-time-is-not-available-on-your-schedule'));
     }
 }

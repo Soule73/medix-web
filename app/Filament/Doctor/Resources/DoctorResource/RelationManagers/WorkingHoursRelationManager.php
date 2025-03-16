@@ -93,7 +93,7 @@ class WorkingHoursRelationManager extends RelationManager
                             ]),
                         Forms\Components\Select::make('day_id')
                             ->options(Day::orderBy('id')->pluck('id', 'name')->mapWithKeys(function ($id, $name): array {
-                                return [$id => __('day.' . $name)];
+                                return [$id => __('day.'.$name)];
                             })->toArray())
                             ->preload()
                             ->label(__('doctor/relation/working-hour.day'))

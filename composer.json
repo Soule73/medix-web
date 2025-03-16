@@ -13,6 +13,7 @@
         "berkayk/onesignal-laravel": "^2.1",
         "bezhansalleh/filament-language-switch": "^3.0",
         "carlos-meneses/laravel-mpdf": "^2.1",
+        "dotswan/filament-laravel-pulse": "^1.1",
         "filament/filament": "^3.2",
         "flowframe/laravel-trend": "^0.2.0",
         "kongulov/interact-with-enum": "^1.0",
@@ -26,6 +27,7 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.12",
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^2.9",
         "laravel-lang/common": "^6.2",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",

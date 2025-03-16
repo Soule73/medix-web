@@ -15,7 +15,7 @@ class SendConfirmValidationIdentityToDoctr extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(private String $doctorFullName, private String $title, private String $body)
+    public function __construct(private string $doctorFullName, private string $title, private string $body)
     {
         //
     }
@@ -38,10 +38,10 @@ class SendConfirmValidationIdentityToDoctr extends Mailable
         return new Content(
             markdown: 'mail.send-confirm-validation-identity-to-doctr',
             with: [
-                'url' => config('app.url') . "/doctor/login",
+                'url' => config('app.url').'/doctor/login',
                 'body' => $this->body,
                 'title' => $this->title,
-                'doctorFullName' => $this->doctorFullName
+                'doctorFullName' => $this->doctorFullName,
             ],
         );
     }

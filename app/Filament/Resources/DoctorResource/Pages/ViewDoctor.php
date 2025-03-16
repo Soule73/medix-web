@@ -2,15 +2,18 @@
 
 namespace App\Filament\Resources\DoctorResource\Pages;
 
-use Filament\Actions;
-use App\Models\Doctor;
 use App\Enums\Doctor\DoctorStatusEnum;
-use Filament\Notifications\Notification;
-use Filament\Resources\Pages\ViewRecord;
+use App\Enums\DocumentsForValidation\DocumentsForValidationStatusEnum;
 use App\Filament\Resources\DoctorResource;
 use App\Jobs\SendConfirmValidationIdentityToDoctrJob;
-use App\Enums\DocumentsForValidation\DocumentsForValidationStatusEnum;
+use App\Models\Doctor;
+use Filament\Actions;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\ViewRecord;
 
+/**
+ * @property Doctor $record
+ */
 class ViewDoctor extends ViewRecord
 {
     protected static string $resource = DoctorResource::class;

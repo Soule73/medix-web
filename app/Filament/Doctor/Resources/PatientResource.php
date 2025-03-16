@@ -52,7 +52,7 @@ class PatientResource extends Resource
                             ->prefixIcon('heroicon-o-calendar-days')
                             ->native(false)
                             ->label(__('doctor/patient.user-birthday')),
-                    ])
+                    ]),
             ]);
     }
 

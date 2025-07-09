@@ -2,17 +2,18 @@
 
 namespace App\Filament\Doctor\Resources;
 
-use App\Enums\Doctor\DoctorStatusEnum;
-use App\Enums\LangEnum;
-use App\Enums\User\UserSexEnum;
-use App\Models\Doctor;
 use Filament\Forms;
+use App\Models\Doctor;
+use App\Enums\LangEnum;
 use Filament\Forms\Form;
-use Filament\Infolists\Components;
-use Filament\Infolists\Components\TextEntry\TextEntrySize;
+use App\Enums\User\UserSexEnum;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Infolists\Components;
+use Illuminate\Support\Facades\Auth;
+use App\Enums\Doctor\DoctorStatusEnum;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Infolists\Components\TextEntry\TextEntrySize;
 
 class DoctorResource extends Resource
 {
@@ -174,7 +175,7 @@ class DoctorResource extends Resource
                                         Components\TextEntry::make('status')
                                             ->label(__('doctor/doctor.doctor-status'))
                                             ->badge()
-                                            ->icon(fn (DoctorStatusEnum $state) => $state == DoctorStatusEnum::VALIDATED ? 'heroicon-s-check-badge' : null)
+                                            ->icon(fn(DoctorStatusEnum $state) => $state == DoctorStatusEnum::VALIDATED ? 'heroicon-s-check-badge' : null)
                                             ->color(function (DoctorStatusEnum $state) {
                                                 return $state === DoctorStatusEnum::NOTVALIDATED ? 'danger' : 'success';
                                             })
@@ -209,7 +210,7 @@ class DoctorResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->where('user_id', auth()->id());
+            ->where('user_id', Auth::id());
     }
 
     public static function getPages(): array

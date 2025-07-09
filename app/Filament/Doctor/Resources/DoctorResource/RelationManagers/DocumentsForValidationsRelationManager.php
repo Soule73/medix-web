@@ -2,17 +2,18 @@
 
 namespace App\Filament\Doctor\Resources\DoctorResource\RelationManagers;
 
-use App\Enums\Doctor\DocumentForValidationEnum;
-use App\Enums\DocumentsForValidation\DocumentsForValidationStatusEnum;
-use App\Models\DocumentsForValidation;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
-use Filament\Tables\Columns\Layout\View;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Validation\Rule;
+use Filament\Support\Enums\MaxWidth;
+use Illuminate\Support\Facades\Auth;
+use App\Models\DocumentsForValidation;
+use Filament\Tables\Columns\Layout\View;
+use App\Enums\Doctor\DocumentForValidationEnum;
+use Filament\Resources\RelationManagers\RelationManager;
+use App\Enums\DocumentsForValidation\DocumentsForValidationStatusEnum;
 
 class DocumentsForValidationsRelationManager extends RelationManager
 {
@@ -47,7 +48,7 @@ class DocumentsForValidationsRelationManager extends RelationManager
                             ->searchable()
                             ->required()
                             ->rule(Rule::unique('documents_for_validations', 'name')->where(function ($query) {
-                                return $query->where('doctor_id', auth()->user()->doctor->id);
+                                return $query->where('doctor_id', Auth::user()->doctor->id);
                             }))
                             ->validationMessages([
                                 'unique' => __('doctor/relation/document-for-validation.form-documents-name-unique'),
@@ -77,7 +78,7 @@ class DocumentsForValidationsRelationManager extends RelationManager
             // ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->formatStateUsing(fn (string $state): string => __("doctor/relation/document-for-validation.$state"))
+                    ->formatStateUsing(fn(string $state): string => __("doctor/relation/document-for-validation.$state"))
                     ->label(__('doctor/relation/document-for-validation.document')),
                 Tables\Columns\TextColumn::make('status')->label(__('doctor/relation/document-for-validation.document-status'))
                     ->color(function (DocumentsForValidationStatusEnum $state) {
@@ -127,7 +128,7 @@ class DocumentsForValidationsRelationManager extends RelationManager
                     ->modalSubmitActionLabel(__('actions.add'))
                     ->modalWidth(MaxWidth::TwoExtraLarge)
                     ->mutateFormDataUsing(function ($data) {
-                        $data['doctor_id'] = auth()->user()->doctor->id;
+                        $data['doctor_id'] = Auth::user()->doctor->id;
 
                         return $data;
                     })
@@ -136,9 +137,9 @@ class DocumentsForValidationsRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->visible(fn (DocumentsForValidation $record) => $record->status !== DocumentsForValidationStatusEnum::VALIDATED),
+                    ->visible(fn(DocumentsForValidation $record) => $record->status !== DocumentsForValidationStatusEnum::VALIDATED),
                 Tables\Actions\DeleteAction::make()
-                    ->visible(fn (DocumentsForValidation $record) => $record->status !== DocumentsForValidationStatusEnum::VALIDATED),
+                    ->visible(fn(DocumentsForValidation $record) => $record->status !== DocumentsForValidationStatusEnum::VALIDATED),
                 Tables\Actions\Action::make(__('doctor/relation/document-for-validation.open-document'))
                     ->modalContent(
                         function (DocumentsForValidation $record) {
@@ -151,8 +152,8 @@ class DocumentsForValidationsRelationManager extends RelationManager
                     ->modalSubmitAction(false)
                     ->modalCancelActionLabel(__('doctor/relation/document-for-validation.cloe-btn'))
                     ->modalCloseButton()
-                    ->modalHeading(fn (DocumentsForValidation $state) => __("doctor/relation/document-for-validation.$state->name"))
-                    ->modelLabel(fn (DocumentsForValidation $state) => __("doctor/relation/document-for-validation.$state->name"))
+                    ->modalHeading(fn(DocumentsForValidation $state) => __("doctor/relation/document-for-validation.$state->name"))
+                    ->modelLabel(fn(DocumentsForValidation $state) => __("doctor/relation/document-for-validation.$state->name"))
                     ->modalWidth(MaxWidth::FiveExtraLarge),
 
             ])

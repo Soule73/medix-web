@@ -2,10 +2,11 @@
 
 namespace App\Filament\Doctor\Resources\DoctorResource\Pages;
 
-use App\Filament\Doctor\Resources\DoctorResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Enums\MaxWidth;
+use Illuminate\Support\Facades\Auth;
+use Filament\Resources\Pages\ViewRecord;
+use App\Filament\Doctor\Resources\DoctorResource;
 
 class ViewDoctor extends ViewRecord
 {
@@ -28,7 +29,7 @@ class ViewDoctor extends ViewRecord
 
     public function mount(int|string|null $record = null): void
     {
-        $record = auth()->user()->doctor->id;
+        $record = Auth::user()->doctor->id;
 
         $this->record = $this->resolveRecord($record);
 

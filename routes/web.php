@@ -8,12 +8,15 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Hash;
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 
 Route::get('/', function () {
+    // degug 
+    // dd(Hash::make('Souledemba#13100587'));
     if (auth()->check() && auth()->user()->role === UserRoleEnum::ADMIN) {
         return redirect()->secure('/admin/login');
     } else {
